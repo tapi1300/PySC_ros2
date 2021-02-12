@@ -41,7 +41,7 @@ void callback(const std_msgs::msg::String::SharedPtr msg)
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-
+  rclcpp::Rate loop_rate(1);
 
   while (rclcpp::ok()) {
     node = rclcpp::Node::make_shared("node_sub");
@@ -49,6 +49,7 @@ int main(int argc, char * argv[])
       "scan_fake", rclcpp::QoS(100).best_effort(), callback);
     
     rclcpp::spin(node);
+    loop_rate.sleep();
   }
   rclcpp::shutdown();
 
