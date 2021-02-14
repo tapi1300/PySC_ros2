@@ -22,10 +22,12 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 set(dependencies
     rclcpp
     std_msgs
+    sensor_msgs
 )
 
 add_executable(node_pub src/node_pub.cpp)

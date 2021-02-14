@@ -13,34 +13,51 @@
 // limitations under the License.
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "sensor_msgs/msg/laser_scan.hpp"
+#include <math.h>
 #include <random>
+
 
 using namespace std::chrono_literals;
 
 int main(int argc, char * argv[])
 {
+  printf("wtf");
   rclcpp::init(argc, argv);
 
+  int num_lecturas = 100;
+
   auto node = rclcpp::Node::make_shared("node_pub");
-  auto publisher = node->create_publisher<std_msgs::msg::String>(
+  auto publisher = node->create_publisher<sensor_msgs::msg::LaserScan>(
     "scan_fake", rclcpp::QoS(100).best_effort());
   
-  std_msgs::msg::String message;
+  sensor_msgs::msg::LaserScan message;
+  message.angle_min = 0;
+  message.angle_max = 2*M_PI;
+  message.angle_increment = 2*M_PI/100;
+  message.range_min = 0.0;
+  message.range_max = 10.0;
 
   std::default_random_engine generator;
   std::normal_distribution<double> distribution(4,1.0);
 
-  rclcpp::Rate loop_rate(1);
-  while (rclcpp::ok()) {
-    double number = distribution(generator);
-    if ((number<0.0) || (number>10.0))
-      continue;
-    message.data = std::to_string(number);
 
-    RCLCPP_INFO(node->get_logger(), "Publishing [%s]", message.data.c_str());
+  rclcpp::Rate loop_rate(1);
+
+  while (rclcpp::ok()) {
+    for(int i = 0; i < num_lecturas; i++) {
+      double number = distribution(generator);
+      while((number < message.range_min) || (number > message.range_max))
+        double number = distribution(generator);
+      message.ranges.push_back(number);
+    }
+
+    RCLCPP_INFO(node->get_logger(), "Publishing fake laser");
 
     publisher->publish(message);
+    
+    message.ranges.clear();
+
 
     rclcpp::spin_some(node);
     loop_rate.sleep();
