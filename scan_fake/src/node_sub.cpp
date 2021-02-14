@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "sensor_msgs/msg/laser_scan.hpp"
 
 double accum=0.0;
 int counter=0;
@@ -22,20 +22,20 @@ double min=10;
 
 rclcpp::Node::SharedPtr node = nullptr;
 
-void callback(const std_msgs::msg::String::SharedPtr msg)
+void callback(const sensor_msgs::msg::LaserScan::SharedPtr msg)
 {
-  double num=std::stod(msg->data);
-  double avg=0;
-  accum+=num;
-  counter++;
-  if (num>max)
-    max=num;
-  if(num<min)
-    min=num;
-  avg+=accum/counter;
-
+  double avg = 0.0, max = -1.0, min = -1.0;
+  for(int i = 0; i < int(msg->ranges.size()); i++) {
+    avg += msg->ranges[i]/msg->ranges.size();
+    if(msg->ranges[i] > max || max == -1.0) {
+      max = msg->ranges[i];
+    }
+    if(msg->ranges[i] < min || min == -1.0) {
+      min = msg->ranges[i];
+    }
+  }
   RCLCPP_INFO(
-    node->get_logger(), "MAX:%.3f   AVG:%.3f   MIN:%.3f   CURRENT:%.3f", max,avg,min,num);
+    node->get_logger(), "MAX:%.3f\tMIN:%.3f\tAVG:%.3f", max,min,avg);
 }
 
 int main(int argc, char * argv[])
@@ -45,7 +45,7 @@ int main(int argc, char * argv[])
 
   while (rclcpp::ok()) {
     node = rclcpp::Node::make_shared("node_sub");
-    auto subscription = node->create_subscription<std_msgs::msg::String>(
+    auto subscription = node->create_subscription<sensor_msgs::msg::LaserScan>(
       "scan_fake", rclcpp::QoS(100).best_effort(), callback);
     
     rclcpp::spin(node);
