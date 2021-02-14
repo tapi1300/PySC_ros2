@@ -1,4 +1,4 @@
-// Copyright 2020 Intelligent Robotics Lab
+// Copyright 2020 El Grupo del Flow
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,43 +14,21 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
-
-double accum=0.0;
-int counter=0;
-double max=0;
-double min=10;
-
-rclcpp::Node::SharedPtr node = nullptr;
-
-void callback(const sensor_msgs::msg::LaserScan::SharedPtr msg)
-{
-  double avg = 0.0, max = -1.0, min = -1.0;
-  for(int i = 0; i < int(msg->ranges.size()); i++) {
-    avg += msg->ranges[i]/msg->ranges.size();
-    if(msg->ranges[i] > max || max == -1.0) {
-      max = msg->ranges[i];
-    }
-    if(msg->ranges[i] < min || min == -1.0) {
-      min = msg->ranges[i];
-    }
-  }
-  RCLCPP_INFO(
-    node->get_logger(), "MAX:%.3f\tMIN:%.3f\tAVG:%.3f", max,min,avg);
-}
+#include "scan_fake/node_sub.hpp"
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   rclcpp::Rate loop_rate(1);
 
+  auto node_sub = std::make_shared<NodeSub>("node_sub");
+
   while (rclcpp::ok()) {
-    node = rclcpp::Node::make_shared("node_sub");
-    auto subscription = node->create_subscription<sensor_msgs::msg::LaserScan>(
-      "scan_fake", rclcpp::QoS(100).best_effort(), callback);
     
-    rclcpp::spin(node);
+    rclcpp::spin(node_sub);
     loop_rate.sleep();
   }
+ 
   rclcpp::shutdown();
 
   return 0;
