@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <memory>
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
 #include "scan_fake/node_sub.hpp"
@@ -24,11 +25,10 @@ int main(int argc, char * argv[])
   auto node_sub = std::make_shared<NodeSub>("node_sub");
 
   while (rclcpp::ok()) {
-    
     rclcpp::spin(node_sub);
     loop_rate.sleep();
   }
- 
+
   rclcpp::shutdown();
 
   return 0;

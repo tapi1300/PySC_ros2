@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "rclcpp/rclcpp.hpp"
-#include "sensor_msgs/msg/laser_scan.hpp"
 #include <math.h>
 #include <random>
+#include <memory>
+#include "rclcpp/rclcpp.hpp"
+#include "sensor_msgs/msg/laser_scan.hpp"
 #include "scan_fake/node_pub.hpp"
 
 
@@ -23,7 +24,6 @@ using namespace std::chrono_literals;
 
 int main(int argc, char * argv[])
 {
-
   rclcpp::init(argc, argv);
 
   auto node_pub = std::make_shared<NodePub>();
