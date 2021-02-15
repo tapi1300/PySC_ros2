@@ -1,4 +1,3 @@
-
 // Copyright 2020 El Grupo del Flow
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +32,6 @@ public:
       "scan_fake", rclcpp::QoS(100).best_effort(), std::bind(&NodeSub::callback, this, _1));
   }
 
-private:
   void callback(const sensor_msgs::msg::LaserScan::SharedPtr msg)
   {
     double avg = 0.0, max = -1.0, min = -1.0;
@@ -50,7 +48,6 @@ private:
     RCLCPP_INFO(
       this->get_logger(), "MAX:%.3f\tMIN:%.3f\tAVG:%.3f", max, min, avg);
   }
-
 
 private:
   rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr sub_;

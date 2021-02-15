@@ -43,8 +43,7 @@ public:
       while ((number < message.range_min) || (number > message.range_max)) {
         number = distribution(generator);
       }
-     message.ranges.push_back(number);
-      
+      message.ranges.push_back(number);
     }
 
     RCLCPP_INFO(this->get_logger(), "Publishing fake laser");
