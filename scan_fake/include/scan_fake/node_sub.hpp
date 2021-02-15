@@ -37,7 +37,8 @@ private:
   void callback(const sensor_msgs::msg::LaserScan::SharedPtr msg)
   {
     double avg = 0.0, max = -1.0, min = -1.0;
-    for (int i = 0; i < static_cast<int>(msg->ranges.size()); i++) {
+    int size = static_cast<int>(msg->ranges.size());
+    for (int i = 0; i < size; i++) {
       avg += msg->ranges[i] / msg->ranges.size();
       if (msg->ranges[i] > max || max == -1.0) {
         max = msg->ranges[i];
