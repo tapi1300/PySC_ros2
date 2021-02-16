@@ -7,6 +7,7 @@
   <maintainer email="achrafnvl@todo.todo">achrafnvl</maintainer>
   <maintainer email="granizo331@todo.todo">granizo331</maintainer>
   <maintainer email="pedop4@gmail.com">tapi1300</maintainer>
+  <maintainer email="d.encabo.2018@alumnos.urjc.es">DiegoURJC</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
