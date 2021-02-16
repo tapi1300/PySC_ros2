@@ -47,6 +47,17 @@ install(TARGETS
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
+ament_export_dependencies(${dependencies})
+
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
+
+include_directories(include)
+
+install(
+  DIRECTORY include/
+  DESTINATION include/
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
 
@@ -54,20 +65,5 @@ if(BUILD_TESTING)
 
 
 endif()
-
-
-ament_export_dependencies(${dependencies})
-
-install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
-
-INCLUDE_DIRECTORIES(
-  include
-)
-
-
-install(DIRECTORY include/
-  DESTINATION include/
-)
-
 
 ament_package()
