@@ -25,6 +25,7 @@ public:
   NodePub()
   : Node("node_pub")
   {
+    message.header.frame_id = "laser";
     message.angle_min = 0;
     message.angle_max = 2 * M_PI;
     message.angle_increment = 2 * M_PI / 100;
@@ -32,7 +33,7 @@ public:
     message.range_max = 10.0;
     pub_ = create_publisher<sensor_msgs::msg::LaserScan>(
       "scan_fake",
-      rclcpp::QoS(100).best_effort());
+      rclcpp::QoS(100).best_effort().durability_volatile());
   }
 
   void doWork()
@@ -53,6 +54,7 @@ public:
   }
 
 private:
+  int counter = 0;
   std::default_random_engine generator;
 
   rclcpp::Publisher<sensor_msgs::msg::LaserScan>::SharedPtr pub_;
