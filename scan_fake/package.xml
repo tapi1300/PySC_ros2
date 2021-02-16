@@ -6,6 +6,7 @@
   <description>TODO: Package description</description>
   <maintainer email="achrafnvl@todo.todo">achrafnvl</maintainer>
   <maintainer email="granizo331@todo.todo">granizo331</maintainer>
+  <maintainer email="pedop4@gmail.com">tapi1300</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
