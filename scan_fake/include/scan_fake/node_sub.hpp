@@ -51,6 +51,5 @@ public:
 
 private:
   rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr sub_;
-  rclcpp::Node::SharedPtr node = nullptr;
 };
 #endif  // SCAN_FAKE__NODE_SUB_HPP_
