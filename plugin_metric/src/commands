@@ -1,0 +1,19 @@
+set instance rooma room 
+set instance roomb room
+set instance ball1 ball 
+set instance ball2 ball 
+set instance left gripper 
+set instance right gripper 
+
+set predicate (free left)
+set predicate (free right)
+set predicate (at-robby rooma) 
+set predicate (at ball1 rooma)
+set predicate (at ball2 rooma)
+
+set goal (and(at ball1 roomb))
+
+run 
+
+get plan 
+
