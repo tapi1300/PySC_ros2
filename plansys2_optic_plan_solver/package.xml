@@ -6,7 +6,7 @@
   
   <description>This package contains the PDDL-based Planner module for the ROS2 Planning System</description>
 
-  <maintainer email="fmrico@gmail.com">Francisco Martin Rico</maintainer>
+  <maintainer email="a.errahmani.2018@alumnos.urjc.es"></maintainer>
  
   <license>Apache License, Version 2.0</license>
 
