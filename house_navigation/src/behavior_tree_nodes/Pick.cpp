@@ -15,7 +15,7 @@
 #include <string>
 #include <iostream>
 
-#include "plansys2_bt_example/behavior_tree_nodes/Pick.hpp"
+#include "house_navigation/behavior_tree_nodes/Pick.hpp"
 
 #include "behaviortree_cpp_v3/behavior_tree.h"
 

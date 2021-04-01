@@ -40,12 +40,6 @@ list(APPEND plugin_libs plansys2_pick_bt_node )
 add_library(plansys2_drop_bt_node SHARED src/behavior_tree_nodes/Drop.cpp)
 list(APPEND plugin_libs plansys2_drop_bt_node )
 
-add_library(plansys2_move_to_zone_node SHARED src/behavior_tree_nodes/MoveToZone.cpp)
-list(APPEND plugin_libs plansys2_move_to_zone_node)
-
-add_library(plansys2_move_out_zone_bt_node SHARED src/behavior_tree_nodes/MoveOutZone.cpp)
-list(APPEND plugin_libs plansys2_move_out_zone_bt_node)
-
 foreach(bt_plugin ${plugin_libs})
   ament_target_dependencies(${bt_plugin} ${dependencies})
   target_compile_definitions(${bt_plugin} PRIVATE BT_PLUGIN_EXPORT)
@@ -57,15 +51,12 @@ ament_target_dependencies(house_action_node ${dependencies})
 add_executable(house_controller_node src/house_controller_node.cpp)
 ament_target_dependencies(house_controller_node ${dependencies})
 
-add_executable(nav2_sim_node src/nav2_sim_node.cpp)
-ament_target_dependencies(nav2_sim_node ${dependencies})
 
 install(DIRECTORY launch pddl behavior_trees_xml config DESTINATION share/${PROJECT_NAME})
 
 install(TARGETS
   house_action_node
   house_controller_node
-  nav2_sim_node
   ${plugin_libs}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
