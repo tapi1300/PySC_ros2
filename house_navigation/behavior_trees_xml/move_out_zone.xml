@@ -1,7 +1,7 @@
 <root main_tree_to_execute = "MainTree" >
     <BehaviorTree ID="MainTree">
        <Sequence name="root_sequence">
-           <MoveOutZone    name="moveoutzone/>
+           <MoveOutZone    name="moveoutzone"/>
        </Sequence>
     </BehaviorTree>
 </root>
