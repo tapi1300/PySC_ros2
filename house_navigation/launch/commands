@@ -4,31 +4,33 @@ set instance rm1 room
 set instance rm2 room
 set instance rm3 room
 
+set instance c1 corridor
+
 set instance o1 object
 
 set instance z1 zone
 
 
-set predicate (robot_at r r1)
+set predicate (robot_at r rm1)
 set predicate (robot_available r)
 set predicate (not_robot_at_zone r)
 set predicate (free r)
 
-set predicate (object_at o1 r3)
+set predicate (object_at o1 rm3)
 
-set predicate (connected r1 c1)
-set predicate (connected c1 r1)
+set predicate (connected rm1 c1)
+set predicate (connected c1 rm1)
 
-set predicate (connected r2 c1)
-set predicate (connected c1 r2)
+set predicate (connected rm2 c1)
+set predicate (connected c1 rm2)
 
-set predicate (connected r2 r3)
-set predicate (connected r3 r2)
+set predicate (connected rm2 rm3)
+set predicate (connected rm3 rm2)
 
-set predicate (zone_at z1 r2)
+set predicate (zone_at z1 rm2)
 
 
-set goal (and(object_at o1 z1)(robot_at r r1))
+set goal (and(object_at o1 z1)(robot_at r rm1))
 
 
 get plan
