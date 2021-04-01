@@ -51,6 +51,9 @@ ament_target_dependencies(house_action_node ${dependencies})
 add_executable(house_controller_node src/house_controller_node.cpp)
 ament_target_dependencies(house_controller_node ${dependencies})
 
+add_executable(nav2_sim_node src/nav2_sim_node.cpp)
+ament_target_dependencies(nav2_sim_node ${dependencies})
+
 
 install(DIRECTORY launch pddl behavior_trees_xml config DESTINATION share/${PROJECT_NAME})
 
