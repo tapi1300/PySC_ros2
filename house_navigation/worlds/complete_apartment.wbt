@@ -1241,72 +1241,7 @@ Wall {
   name "wall 7(3)"
   size 3.2 2.4 0.3
 }
-Door {
-  translation 8.43 0 6.24
-  rotation 0 1 0 1.5708
-  size 1 2.4 0.3
-  jointAtLeft FALSE
-  frameSize 0.05 0.05 0.001
-  frameAppearance BrushedAluminium {
-  }
-  doorHandle DoorLever {
-    jointAtLeft FALSE
-  }
-}
-Door {
-  translation 3.95 0 3.89
-  rotation 0 1 0 3.14159
-  name "door(6)"
-  size 1 2.4 0.3
-  frameSize 0.05 0.05 0.001
-  frameAppearance BrushedAluminium {
-  }
-}
-Door {
-  translation 8.43 0 4.94
-  rotation 0 1 0 1.5708
-  name "door(5)"
-  size 1 2.4 0.3
-  frameSize 0.05 0.05 0.001
-  frameAppearance BrushedAluminium {
-  }
-}
-Door {
-  translation 7.24 0 6.97
-  rotation 0 1 0 3.37175e-07
-  name "door(3)"
-  size 1 2.4 0.3
-  frameSize 0.05 0.05 0.001
-  frameAppearance BrushedAluminium {
-  }
-}
-Door {
-  translation 6.6 0 0.91
-  rotation 0 1 0 -1.5707953071795862
-  name "door(4)"
-  size 1 2.4 0.3
-  frameSize 0.05 0.05 0.001
-  frameAppearance BrushedAluminium {
-  }
-}
-Door {
-  translation 7.49 0 0
-  rotation 0 1 0 -3.1415923071795864
-  name "door(1)"
-  size 1 2.4 0.3
-  frameSize 0.05 0.05 0.001
-  frameAppearance BrushedAluminium {
-  }
-}
-Door {
-  translation 8.43 0 2.14977
-  rotation 0 1 0 1.5708
-  name "door(2)"
-  size 1 2.4 0.3
-  frameSize 0.05 0.05 0.001
-  frameAppearance BrushedAluminium {
-  }
-}
+
 Wall {
   translation 6.6 0 2.93
   rotation 0 1 0 1.5708
