@@ -63,43 +63,41 @@ def generate_launch_description():
           }
         ])
 
-    transport_1_cmd = Node(
+
+    pick_1_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
-        name='transport_1',
+        name='pick',
         namespace=namespace,
         output='screen',
         parameters=[
           example_dir + '/config/params.yaml',
           {
-            'action_name': 'transport',
-            'publisher_port': 1674,
-            'server_port': 1675,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/transport.xml'
+            'action_name': 'pick',
+            'publisher_port': 1670,
+            'server_port': 1671,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/pick.xml'
           }
         ])
 
-    assemble_1_cmd = Node(
-        package='plansys2_bt_example',
-        executable='assemble_action_node',
-        name='assemble_1',
-        namespace=namespace,
-        output='screen',
-        parameters=[]) 
-
-    recharge_1_cmd = Node(
+    drop_1_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
-        name='recharge_1',
+        name='drop',
         namespace=namespace,
         output='screen',
         parameters=[
           example_dir + '/config/params.yaml',
           {
-            'action_name': 'recharge',
-            'bt_xml_file': example_dir + '/behavior_trees_xml/recharge.xml'
+            'action_name': 'drop',
+            'publisher_port': 1672,
+            'server_port': 1673,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/drop.xml'
           }
         ])
+
+
+      
 
     ld = LaunchDescription()
 
@@ -111,8 +109,7 @@ def generate_launch_description():
     ld.add_action(plansys2_cmd)
 
     ld.add_action(move_1_cmd)
-    # ld.add_action(transport_1_cmd)
-    # ld.add_action(assemble_1_cmd)
-    # ld.add_action(recharge_1_cmd)
+    ld.add_action(pick_1_cmd)
+    ld.add_action(drop_1_cmd)
 
     return ld
