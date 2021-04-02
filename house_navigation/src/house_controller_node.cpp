@@ -46,39 +46,56 @@ public:
   {
     problem_expert_->addInstance(plansys2::Instance{"r", "robot"});
 
-    problem_expert_->addInstance(plansys2::Instance{"rm1", "room"});
-    problem_expert_->addInstance(plansys2::Instance{"rm2", "room"});
-    problem_expert_->addInstance(plansys2::Instance{"rm3", "room"});
+    problem_expert_->addInstance(plansys2::Instance{"salon", "room"});
+    problem_expert_->addInstance(plansys2::Instance{"cocina", "room"});
+    problem_expert_->addInstance(plansys2::Instance{"h1", "room"});
+    problem_expert_->addInstance(plansys2::Instance{"h2", "room"});
+    problem_expert_->addInstance(plansys2::Instance{"b1", "room"});
+    problem_expert_->addInstance(plansys2::Instance{"b2", "room"});
 
-    problem_expert_->addInstance(plansys2::Instance{"c1", "corridor"});
+    problem_expert_->addInstance(plansys2::Instance{"pasillo", "corridor"});
 
     problem_expert_->addInstance(plansys2::Instance{"o1", "object"});
 
     problem_expert_->addInstance(plansys2::Instance{"z1", "zone"});
+    problem_expert_->addInstance(plansys2::Instance{"z2", "zone"});
+    problem_expert_->addInstance(plansys2::Instance{"z3", "zone"});
+    problem_expert_->addInstance(plansys2::Instance{"z4", "zone"});
+    problem_expert_->addInstance(plansys2::Instance{"z5", "zone"});
 
 
-    problem_expert_->addPredicate(plansys2::Predicate("(robot_at r rm1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(robot_at r salon)"));
     problem_expert_->addPredicate(plansys2::Predicate("(robot_available r)"));
     problem_expert_->addPredicate(plansys2::Predicate("(not_robot_at_zone r)"));
     problem_expert_->addPredicate(plansys2::Predicate("(free r)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(object_at o1 rm3)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(object_at o1 h2)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(connected rm1 c1)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected c1 rm1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected salon pasillo)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected pasillo salon)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(connected rm2 c1)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected c1 rm2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected h1 pasillo)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected pasillo h1)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(connected rm2 rm3)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected rm3 rm2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected b1 pasillo)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected pasillo b1)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(zone_at z1 rm2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected b2 pasillo)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected pasillo b2)"));
+
+    problem_expert_->addPredicate(plansys2::Predicate("(connected salon cocina)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected cocina salon)"));
+
+    problem_expert_->addPredicate(plansys2::Predicate("(zone_at z1 salon)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(zone_at z2 salon)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(zone_at z3 cocina)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(zone_at z4 cocina)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(zone_at z5 h1)"));
 
 
     problem_expert_->setGoal(
       plansys2::Goal(
-        "(and(object_at o1 z1)(robot_at r r1))"));
+        "(and(robot_at r pasillo))"));
   }
 
   void step()
