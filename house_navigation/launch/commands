@@ -36,3 +36,63 @@ set goal (and(object_at o1 z1)(robot_at r rm1))
 get plan
 
 run
+
+
+
+
+
+
+set instance r robot
+set instance salon room
+set instance cocina room
+set instance h1 room
+set instance h2 room
+set instance b1 room
+set instance b2 room
+set instance pasillo corridor
+set instance o1 object
+set instance z1 zone
+set instance z2 zone
+set instance z3 zone
+set instance z4 zone
+set instance z5 zone
+
+
+set predicate (robot_at r salon)
+set predicate (robot_available r)
+set predicate (not_robot_at_zone r)
+set predicate (free r)
+
+set predicate (object_at o1 h2)
+
+set predicate (connected salon pasillo)
+set predicate (connected pasillo salon)
+
+set predicate (connected h1 pasillo)
+set predicate (connected pasillo h1)
+
+set predicate (connected h2 pasillo)
+set predicate (connected pasillo h2)
+
+set predicate (connected b1 pasillo)
+set predicate (connected pasillo b1)
+
+set predicate (connected b2 pasillo)
+set predicate (connected pasillo b2)
+
+set predicate (connected salon cocina)
+set predicate (connected cocina salon)
+
+set predicate (zone_at z1 salon)
+set predicate (zone_at z2 salon)
+set predicate (zone_at z3 cocina)
+set predicate (zone_at z4 cocina)
+set predicate (zone_at z5 h1)
+
+
+set goal (and(object_at o1 z1)(robot_at r h1))
+
+
+get plan
+
+run
