@@ -57,8 +57,8 @@ def generate_launch_description():
           example_dir + '/config/params.yaml',
           {
             'action_name': 'move',
-            'publisher_port': 1668,
-            'server_port': 1669,
+            'publisher_port': 3000,
+            'server_port': 3001,
             'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
           }
         ])
@@ -74,8 +74,8 @@ def generate_launch_description():
           example_dir + '/config/params.yaml',
           {
             'action_name': 'pick',
-            'publisher_port': 1670,
-            'server_port': 1671,
+            'publisher_port': 3002,
+            'server_port': 3003,
             'bt_xml_file': example_dir + '/behavior_trees_xml/pick.xml'
           }
         ])
@@ -90,8 +90,8 @@ def generate_launch_description():
           example_dir + '/config/params.yaml',
           {
             'action_name': 'drop',
-            'publisher_port': 1672,
-            'server_port': 1673,
+            'publisher_port': 3004,
+            'server_port': 3005,
             'bt_xml_file': example_dir + '/behavior_trees_xml/drop.xml'
           }
         ])
