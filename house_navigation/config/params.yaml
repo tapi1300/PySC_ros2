@@ -1,19 +1,19 @@
 move_1:
   ros__parameters:
     plugins:
-      - plansys2_move_bt_node
-    # waypoints: ["wheels_zone", "steering_wheels_zone", "body_car_zone", "assembly_zone", "recharge_zone"]
-    # waypoint_coords:
-    #   wheels_zone: [0.0, -2.0, 0.0]
-      # steering_wheels_zone: [1.8, 0.0, 0.0]
+      - house_move_bt_node
+    waypoints: ["salon", "pasillo"]
+    waypoint_coords:
+      salon: [5.216, 0.0930595, 7.56037]
+      pasillo: [7.55666, 0.0963663, 4.16081]
       # body_car_zone: [0.0, 2.0, 0.0]
       # assembly_zone: [-2.0, -0.4, 0.0]
       # recharge_zone: [-2.0, -0.4, 0.0]
 pick_1:
   ros__parameters:
     plugins:
-      - plansys2_pick_bt_node
+      - house_pick_bt_node
 drop_1:
   ros__parameters:
     plugins:
-      - plansys2_drop_bt_node
+      - house_drop_bt_node
