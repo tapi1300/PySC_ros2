@@ -50,7 +50,7 @@ def generate_launch_description():
     move_1_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
-        name='move',
+        name='move_1',
         namespace=namespace,
         output='screen',
         parameters=[
@@ -67,7 +67,7 @@ def generate_launch_description():
     pick_1_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
-        name='pick',
+        name='pick_1',
         namespace=namespace,
         output='screen',
         parameters=[
@@ -83,7 +83,7 @@ def generate_launch_description():
     drop_1_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
-        name='drop',
+        name='drop_1',
         namespace=namespace,
         output='screen',
         parameters=[
