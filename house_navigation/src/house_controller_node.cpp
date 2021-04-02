@@ -44,34 +44,36 @@ public:
 
   void init_knowledge()
   {
-    problem_expert_->addInstance(plansys2::Instance{"r2d2", "robot"});
+    problem_expert_->addInstance(plansys2::Instance{"r", "robot"});
 
     problem_expert_->addInstance(plansys2::Instance{"rm1", "room"});
     problem_expert_->addInstance(plansys2::Instance{"rm2", "room"});
     problem_expert_->addInstance(plansys2::Instance{"rm3", "room"});
+
+    problem_expert_->addInstance(plansys2::Instance{"c1", "corridor"});
 
     problem_expert_->addInstance(plansys2::Instance{"o1", "object"});
 
     problem_expert_->addInstance(plansys2::Instance{"z1", "zone"});
 
 
-    problem_expert_->addPredicate(plansys2::Predicate("(robot_at r r1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(robot_at r rm1)"));
     problem_expert_->addPredicate(plansys2::Predicate("(robot_available r)"));
     problem_expert_->addPredicate(plansys2::Predicate("(not_robot_at_zone r)"));
     problem_expert_->addPredicate(plansys2::Predicate("(free r)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(object_at o1 r3)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(object_at o1 rm3)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(connected r1 c1)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected c1 r1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected rm1 c1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected c1 rm1)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(connected r2 c1)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected c1 r2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected rm2 c1)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected c1 rm2)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(connected r2 r3)"));
-    problem_expert_->addPredicate(plansys2::Predicate("(connected r3 r2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected rm2 rm3)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(connected rm3 rm2)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(zone_at z1 r2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(zone_at z1 rm2)"));
 
 
     problem_expert_->setGoal(
