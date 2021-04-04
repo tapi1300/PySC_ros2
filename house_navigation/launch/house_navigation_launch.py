@@ -62,6 +62,21 @@ def generate_launch_description():
             'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
           }
         ])
+    move_2_cmd = Node(
+        package='plansys2_bt_actions',
+        executable='bt_action_node',
+        name='move_2',
+        namespace=namespace,
+        output='screen',
+        parameters=[
+          example_dir + '/config/params.yaml',
+          {
+            'action_name': 'move',
+            'publisher_port': 3008,
+            'server_port': 3009,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
+          }
+        ])
 
 
     pick_1_cmd = Node(
@@ -109,6 +124,7 @@ def generate_launch_description():
     ld.add_action(plansys2_cmd)
 
     ld.add_action(move_1_cmd)
+    ld.add_action(move_2_cmd)
     ld.add_action(pick_1_cmd)
     ld.add_action(drop_1_cmd)
 

@@ -64,7 +64,7 @@ public:
     problem_expert_->addInstance(plansys2::Instance{"z5", "zone"});
 
 
-    problem_expert_->addPredicate(plansys2::Predicate("(robot_at r salon)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(robot_at r cocina)"));
     problem_expert_->addPredicate(plansys2::Predicate("(robot_available r)"));
     problem_expert_->addPredicate(plansys2::Predicate("(not_robot_at_zone r)"));
     problem_expert_->addPredicate(plansys2::Predicate("(free r)"));
@@ -95,7 +95,7 @@ public:
 
     problem_expert_->setGoal(
       plansys2::Goal(
-        "(and(robot_at r pasillo))"));
+        "(and(robot_at r h1))"));
   }
 
   void step()
