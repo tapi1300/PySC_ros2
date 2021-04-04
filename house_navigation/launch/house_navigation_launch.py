@@ -72,41 +72,72 @@ def generate_launch_description():
           example_dir + '/config/params.yaml',
           {
             'action_name': 'move',
-            'publisher_port': 3008,
-            'server_port': 3009,
+            'publisher_port': 3010,
+            'server_port': 3011,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
+          }
+        ])
+    
+    move_to_cmd = Node(
+        package='plansys2_bt_actions',
+        executable='bt_action_node',
+        name='move_to_zone',
+        namespace=namespace,
+        output='screen',
+        parameters=[
+          example_dir + '/config/params.yaml',
+          {
+            'action_name': 'move_to_zone',
+            'publisher_port': 3004,
+            'server_port': 3005,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
+          }
+        ])
+    move_out_cmd = Node(
+        package='plansys2_bt_actions',
+        executable='bt_action_node',
+        name='move_out_zone',
+        namespace=namespace,
+        output='screen',
+        parameters=[
+          example_dir + '/config/params.yaml',
+          {
+            'action_name': 'move_out_zone',
+            'publisher_port': 3006,
+            'server_port': 3007,
             'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
           }
         ])
 
 
-    pick_1_cmd = Node(
+    pick_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
-        name='pick_1',
+        name='pick',
         namespace=namespace,
         output='screen',
         parameters=[
           example_dir + '/config/params.yaml',
           {
             'action_name': 'pick',
-            'publisher_port': 3002,
-            'server_port': 3003,
+            'publisher_port': 3008,
+            'server_port': 3009,
             'bt_xml_file': example_dir + '/behavior_trees_xml/pick.xml'
           }
         ])
 
-    drop_1_cmd = Node(
+    drop_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
-        name='drop_1',
+        name='drop',
         namespace=namespace,
         output='screen',
         parameters=[
           example_dir + '/config/params.yaml',
           {
             'action_name': 'drop',
-            'publisher_port': 3004,
-            'server_port': 3005,
+            'publisher_port': 3010,
+            'server_port': 3011,
             'bt_xml_file': example_dir + '/behavior_trees_xml/drop.xml'
           }
         ])
@@ -125,7 +156,9 @@ def generate_launch_description():
 
     ld.add_action(move_1_cmd)
     ld.add_action(move_2_cmd)
-    ld.add_action(pick_1_cmd)
-    ld.add_action(drop_1_cmd)
+    ld.add_action(move_to_cmd)
+    ld.add_action(move_out_cmd)
+    ld.add_action(pick_cmd)
+    ld.add_action(drop_cmd)
 
     return ld

@@ -36,10 +36,10 @@ object
         (over all (connected ?from ?to))
         )
     :effect (and
-        (at start(not(robot_at ?r ?from)))
-        (at end(robot_at ?r ?to))
-        (at start(not(robot_available ?r)))
-        (at end(robot_available ?r))
+        (at start (not(robot_at ?r ?from)))
+        (at end (robot_at ?r ?to))
+        (at start (not(robot_available ?r)))
+        (at end (robot_available ?r))
     )
 )
 
@@ -54,7 +54,7 @@ object
         )
     :effect (and
         (at start(not(robot_available ?r)))
-        (at end(robot_available ?r))
+        (at end (robot_available ?r))
         (at end (not(not_robot_at_zone ?r)))
         (at end(robot_at ?r ?z))
     )
@@ -80,7 +80,7 @@ object
 
 (:durative-action pick
     :parameters (?r - robot ?p - place ?o - object)
-    :duration ( = ?duration 5)
+    :duration ( = ?duration 10)
     :condition (and
         (at start (robot_at ?r ?p))
         (at start (object_at ?o ?p))
@@ -98,7 +98,7 @@ object
 
 (:durative-action drop
     :parameters (?r - robot ?p - place ?o - object)
-    :duration ( = ?duration 2)
+    :duration ( = ?duration 5)
     :condition (and
         (at start(robot_at ?r ?p))
         (at start(robot_available ?r))
