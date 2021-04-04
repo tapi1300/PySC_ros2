@@ -64,12 +64,12 @@ public:
     problem_expert_->addInstance(plansys2::Instance{"z5", "zone"});
 
 
-    problem_expert_->addPredicate(plansys2::Predicate("(robot_at r cocina)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(robot_at r salon)"));
     problem_expert_->addPredicate(plansys2::Predicate("(robot_available r)"));
     problem_expert_->addPredicate(plansys2::Predicate("(not_robot_at_zone r)"));
     problem_expert_->addPredicate(plansys2::Predicate("(free r)"));
 
-    problem_expert_->addPredicate(plansys2::Predicate("(object_at o1 h2)"));
+    problem_expert_->addPredicate(plansys2::Predicate("(object_at o1 salon)"));
 
     problem_expert_->addPredicate(plansys2::Predicate("(connected salon pasillo)"));
     problem_expert_->addPredicate(plansys2::Predicate("(connected pasillo salon)"));
@@ -95,7 +95,7 @@ public:
 
     problem_expert_->setGoal(
       plansys2::Goal(
-        "(and(robot_at r h1))"));
+        "(and(robot_at r cocina))"));
   }
 
   void step()
