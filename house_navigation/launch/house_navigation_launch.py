@@ -57,8 +57,8 @@ def generate_launch_description():
           example_dir + '/config/params.yaml',
           {
             'action_name': 'move',
-            'publisher_port': 3000,
-            'server_port': 3001,
+            'publisher_port': 1668,
+            'server_port': 1669,
             'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
           }
         ])
@@ -72,8 +72,23 @@ def generate_launch_description():
           example_dir + '/config/params.yaml',
           {
             'action_name': 'move',
-            'publisher_port': 3010,
-            'server_port': 3011,
+            'publisher_port': 1668,
+            'server_port': 1669,
+            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
+          }
+        ])
+    move_3_cmd = Node(
+        package='plansys2_bt_actions',
+        executable='bt_action_node',
+        name='move_3',
+        namespace=namespace,
+        output='screen',
+        parameters=[
+          example_dir + '/config/params.yaml',
+          {
+            'action_name': 'move',
+            'publisher_port': 1668,
+            'server_port': 1669,
             'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
           }
         ])
@@ -88,8 +103,8 @@ def generate_launch_description():
           example_dir + '/config/params.yaml',
           {
             'action_name': 'move_to_zone',
-            'publisher_port': 3004,
-            'server_port': 3005,
+            'publisher_port': 1682,
+            'server_port': 1683,
             'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
           }
         ])
@@ -103,8 +118,8 @@ def generate_launch_description():
           example_dir + '/config/params.yaml',
           {
             'action_name': 'move_out_zone',
-            'publisher_port': 3006,
-            'server_port': 3007,
+            'publisher_port': 1684,
+            'server_port': 1685,
             'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
           }
         ])
@@ -120,8 +135,8 @@ def generate_launch_description():
           example_dir + '/config/params.yaml',
           {
             'action_name': 'pick',
-            'publisher_port': 3008,
-            'server_port': 3009,
+            'publisher_port': 1686,
+            'server_port': 1687,
             'bt_xml_file': example_dir + '/behavior_trees_xml/pick.xml'
           }
         ])
@@ -136,8 +151,8 @@ def generate_launch_description():
           example_dir + '/config/params.yaml',
           {
             'action_name': 'drop',
-            'publisher_port': 3010,
-            'server_port': 3011,
+            'publisher_port': 1688,
+            'server_port': 1689,
             'bt_xml_file': example_dir + '/behavior_trees_xml/drop.xml'
           }
         ])
@@ -156,6 +171,7 @@ def generate_launch_description():
 
     ld.add_action(move_1_cmd)
     ld.add_action(move_2_cmd)
+    ld.add_action(move_3_cmd)
     ld.add_action(move_to_cmd)
     ld.add_action(move_out_cmd)
     ld.add_action(pick_cmd)
