@@ -1,4 +1,4 @@
-move_1:
+move:
   ros__parameters:
     plugins:
       - house_move_bt_node
