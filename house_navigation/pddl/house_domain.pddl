@@ -28,7 +28,7 @@ object
 ;; Actions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (:durative-action move
     :parameters (?r - robot ?from ?to - place)
-    :duration ( = ?duration 5)
+    :duration ( = ?duration 10)
     :condition (and
         (at start(robot_at ?r ?from))
         (at start(robot_available ?r))
