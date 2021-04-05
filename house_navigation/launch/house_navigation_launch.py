@@ -47,40 +47,10 @@ def generate_launch_description():
           }.items())
 
     # Specify the actions
-    move_1_cmd = Node(
+    move_cmd = Node(
         package='plansys2_bt_actions',
         executable='bt_action_node',
-        name='move_1',
-        namespace=namespace,
-        output='screen',
-        parameters=[
-          example_dir + '/config/params.yaml',
-          {
-            'action_name': 'move',
-            'publisher_port': 1668,
-            'server_port': 1669,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
-          }
-        ])
-    move_2_cmd = Node(
-        package='plansys2_bt_actions',
-        executable='bt_action_node',
-        name='move_2',
-        namespace=namespace,
-        output='screen',
-        parameters=[
-          example_dir + '/config/params.yaml',
-          {
-            'action_name': 'move',
-            'publisher_port': 1668,
-            'server_port': 1669,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
-          }
-        ])
-    move_3_cmd = Node(
-        package='plansys2_bt_actions',
-        executable='bt_action_node',
-        name='move_3',
+        name='move',
         namespace=namespace,
         output='screen',
         parameters=[
@@ -105,7 +75,7 @@ def generate_launch_description():
             'action_name': 'move_to_zone',
             'publisher_port': 1682,
             'server_port': 1683,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
+            'bt_xml_file': example_dir + '/behavior_trees_xml/move_to_zone.xml'
           }
         ])
     move_out_cmd = Node(
@@ -120,7 +90,7 @@ def generate_launch_description():
             'action_name': 'move_out_zone',
             'publisher_port': 1684,
             'server_port': 1685,
-            'bt_xml_file': example_dir + '/behavior_trees_xml/move.xml'
+            'bt_xml_file': example_dir + '/behavior_trees_xml/move_out_zone.xml'
           }
         ])
 
@@ -169,9 +139,7 @@ def generate_launch_description():
     # Declare the launch options
     ld.add_action(plansys2_cmd)
 
-    ld.add_action(move_1_cmd)
-    ld.add_action(move_2_cmd)
-    ld.add_action(move_3_cmd)
+    ld.add_action(move_cmd)
     ld.add_action(move_to_cmd)
     ld.add_action(move_out_cmd)
     ld.add_action(pick_cmd)

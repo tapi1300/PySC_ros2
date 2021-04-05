@@ -95,7 +95,7 @@ public:
 
     problem_expert_->setGoal(
       plansys2::Goal(
-        "(and(object_at o1 h1)(robot_at r pasillo))"));
+        "(and(object_at o1 h1)(robot_at r salon))"));
   }
 
   void step()
