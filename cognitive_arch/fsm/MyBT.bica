@@ -1,0 +1,8 @@
+<component id="MyBT">
+ <state initial="false" x="523" y="-60" id="State2"/>
+ <state initial="true" x="189" y="-17" id="Initial"/>
+ <state initial="false" x="326" y="-238" id="State1"/>
+ <transition src="State1" dst="State2"/>
+ <transition src="Initial" dst="State1"/>
+ <transition src="State2" dst="Initial"/>
+</component>
