@@ -7,6 +7,13 @@
 
 #include "std_msgs/msg/string.hpp"
 #include "rclcpp_cascade_lifecycle/rclcpp_cascade_lifecycle.hpp"
+#include "plansys2_msgs/msg/action_execution_info.hpp"
+
+#include "plansys2_executor/ExecutorClient.hpp"
+#include "plansys2_problem_expert/ProblemExpertClient.hpp"
+
+#include "rclcpp/rclcpp.hpp"
+#include "rclcpp_action/rclcpp_action.hpp"
 
 namespace cascade_hfsm
 {
@@ -56,6 +63,8 @@ private:
   std::string myBaseId_;
   rclcpp_lifecycle::LifecyclePublisher<std_msgs::msg::String>::SharedPtr state_pub_;
   rclcpp::TimerBase::SharedPtr loop_timer_;
+  std::shared_ptr<plansys2::ProblemExpertClient> problem_expert_;
+  std::shared_ptr<plansys2::ExecutorClient> executor_client_;
 };
 
 }  // namespace cascade_hfsm
