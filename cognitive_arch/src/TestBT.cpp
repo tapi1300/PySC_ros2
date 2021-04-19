@@ -1,3 +1,17 @@
+// Copyright 2021 El Grupo Del Flow
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "lifecycle_msgs/msg/state.hpp"
@@ -24,18 +38,36 @@ public:
         return (now()-state_ts_).seconds() > 1.0;
     }
 
+    // virtual bool State1_2_State2()
+    // {
+    //     return get_result();
+    // }
+    // virtual bool Initial_2_State1()
+    // {
+    //     return get_result();
+    // }
+    // virtual bool State2_2_Initial()
+    // {
+    //     return get_result();
+    // }
 };
 
 int main(int argc, char ** argv)
 {
     rclcpp::init(argc, argv);
-    auto node = std::make_shared<Test>();
 
+    auto node = std::make_shared<Test>();
+    
     rclcpp::executors::SingleThreadedExecutor executor;
+
     executor.add_node(node->get_node_base_interface());
+    std::cout << "perro bajate warro 1" << std::endl;
+    node->init();
+    std::cout << "perro bajate warro 2" << std::endl;
     node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
     executor.spin_some();
     node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
+
     executor.spin();
 
     rclcpp::shutdown();
