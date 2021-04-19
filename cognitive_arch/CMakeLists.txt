@@ -1,18 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(cognitive_arch)
 
-# Default to C99
-if(NOT CMAKE_C_STANDARD)
-  set(CMAKE_C_STANDARD 99)
-endif()
-
-# Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
-endif()
-
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
+  set(CMAKE_CXX_STANDARD 17)
 endif()
 
 # find dependencies
@@ -44,20 +34,33 @@ set(dependencies
     plansys2_bt_actions
 )
 
+include_directories(include)
 include_directories(fsm)
+
+
+
+
+foreach(bt_plugin ${plugin_libs})
+  ament_target_dependencies(${bt_plugin} ${dependencies})
+  target_compile_definitions(${bt_plugin} PRIVATE BT_PLUGIN_EXPORT)
+endforeach()
+
+
 
 add_executable(hfsm_main
   src/TestBT.cpp
   fsm/MyBT.cpp
 )
-
 ament_target_dependencies(hfsm_main ${dependencies})
+
+install(DIRECTORY fsm DESTINATION share/${PROJECT_NAME})
+
 install(TARGETS
   hfsm_main
+  ${plugin_libs}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
-  ${plugin_libs}
 )
 
 
@@ -72,5 +75,7 @@ if(BUILD_TESTING)
   #set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+ament_export_dependencies(${dependencies})
 
 ament_package()
