@@ -42,16 +42,22 @@ public:
   virtual rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
   on_deactivate(const rclcpp_lifecycle::State & previous_state);
 
-  virtual void State2_code_iterative() {}
-  virtual void State2_code_once() {}
   virtual void Initial_code_iterative() {}
-  virtual void Initial_code_once() {}
-  virtual void State1_code_iterative() {}
-  virtual void State1_code_once() {}
+  virtual void Initial_code_once();
+  virtual void Cocina_code_iterative();
+  virtual void Cocina_code_once() {}
+  virtual void Cocina_replan();
+  virtual void B1_code_iterative();
+  virtual void B1_code_once() {}
+  virtual void B1_replan();
+  virtual void H1_code_iterative();
+  virtual void H1_code_once() {}
+  virtual void H1_replan();
 
-  virtual bool State1_2_State2() {return false;}
-  virtual bool Initial_2_State1() {return false;}
-  virtual bool State2_2_Initial() {return false;}
+  virtual bool Cocina_2_B1();
+  virtual bool Initial_2_Cocina() {return false;}
+  virtual bool B1_2_H1();
+  virtual bool H1_2_Cocina();
   
   void init();
   void tick();
@@ -61,15 +67,17 @@ protected:
   rclcpp::Time state_ts_;
 
 private:
-  void deactivateAllDeps();
-  void State2_activateDeps();
-  void Initial_activateDeps();
-  void State1_activateDeps();
+  void deactivateAllDeps() {}
+  void B1_activateDeps() {}
+  void Initial_activateDeps() {}
+  void Cocina_activateDeps() {}
+  void H1_activateDeps() {}
 
 
-  static const int STATE2 = 0;
+  static const int B1 = 0;
   static const int INITIAL = 1;
-  static const int STATE1 = 2;
+  static const int COCINA = 2;
+  static const int H1 = 3;
 
 
   int state_;

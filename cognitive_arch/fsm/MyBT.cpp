@@ -101,7 +101,6 @@ MyBT::on_activate(const rclcpp_lifecycle::State & previous_state)
   state_ts_ = now();
 
   Initial_activateDeps();
-  Initial_code_once();
 
 
   double frequency = 5.0;
@@ -130,85 +129,44 @@ void MyBT::tick()
 
   switch (state_) {
     case INITIAL:
-         Initial_code_iterative();
-      std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
-      // Set the goal for next state, and execute plan
-      problem_expert_->setGoal(
-        plansys2::Goal(
-          "(and(explored cocina))"));
-
-      if (executor_client_->start_plan_execution()) {
-        state_ = STATE1;
-      }
+      Initial_code_once();
       break;
 
-    case STATE1:
+    case COCINA:
       {
-        State1_code_iterative();
-        std::cout << "BBBBBBBBBBBBBBBBBBBBBB" << std::endl;
-        auto feedback = executor_client_->getFeedBack();
-
-        for (const auto & action_feedback : feedback.action_execution_status) {
-          std::cout << "[" << action_feedback.action << " " <<
-            action_feedback.completion * 100.0 << "%]";
-        }
-        std::cout << std::endl;
+        Cocina_code_iterative();
 
         if (executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
           if (executor_client_->getResult().value().success) {
-            std::cout << "Successful finished " << std::endl;
-
-
-            // Set the goal for next state, and execute plan
-            problem_expert_->setGoal(plansys2::Goal("(and(explored h1))"));
-
-            if (executor_client_->start_plan_execution()) {
-              state_ = STATE2;
-            }
+            Cocina_2_B1();
           } else {
-            for (const auto & action_feedback : feedback.action_execution_status) {
-              if (action_feedback.status == plansys2_msgs::msg::ActionExecutionInfo::FAILED) {
-                std::cout << "[" << action_feedback.action << "] finished with error: " <<
-                  action_feedback.message_status << std::endl;
-              }
-            }
-            executor_client_->start_plan_execution();  // replan and execute
+            Cocina_replan();
           }
         }
       }
       break;
 
-    case STATE2:
+    case B1:
       {
-        State2_code_iterative();
-        std::cout << "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC" << std::endl;
-        auto feedback = executor_client_->getFeedBack();
-
-        for (const auto & action_feedback : feedback.action_execution_status) {
-          std::cout << "[" << action_feedback.action << " " <<
-            action_feedback.completion * 100.0 << "%]";
-        }
-        std::cout << std::endl;
-
         if (executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
+          B1_code_iterative();
           if (executor_client_->getResult().value().success) {
-            std::cout << "Successful finished " << std::endl;
-
-
-            // Set the goal for next state, and execute plan
-            problem_expert_->setGoal(plansys2::Goal("(and(robot_at r h1))"));
-
-            if (executor_client_->start_plan_execution()) {
-              state_ = STATE1;
-            }
+            B1_2_H1();
           } else {
-            for (const auto & action_feedback : feedback.action_execution_status) {
-              if (action_feedback.status == plansys2_msgs::msg::ActionExecutionInfo::FAILED) {
-                std::cout << "[" << action_feedback.action << "] finished with error: " <<
-                  action_feedback.message_status << std::endl;
-              }
-            }
-            executor_client_->start_plan_execution();  // replan and execute
+            B1_replan();
+          }
+        }
+      }
+      break;
+
+    case H1:
+      {
+        if (executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
+          H1_code_iterative();
+          if (executor_client_->getResult().value().success) {
+            H1_2_Cocina();
+          } else {
+            H1_replan();
           }
         }
       }
@@ -218,22 +176,150 @@ void MyBT::tick()
   
 }
 
+/***INITIAL***/
 void
-MyBT::deactivateAllDeps()
+MyBT::Initial_code_once()
 {
+  std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
+  // Set the goal for next state, and execute plan
+  problem_expert_->setGoal(
+    plansys2::Goal(
+      "(and(explored cocina))"));
+
+  if (executor_client_->start_plan_execution()) {
+    state_ = COCINA;
+  }
+}
+
+
+
+/***COCINA***/
+void
+MyBT::Cocina_code_iterative()
+{
+  std::cout << "BBBBB11111" << std::endl;
+  auto feedback = executor_client_->getFeedBack();
+
+  for (const auto & action_feedback : feedback.action_execution_status) {
+    std::cout << "[" << action_feedback.action << " " <<
+      action_feedback.completion * 100.0 << "%]";
+  }
+  std::cout << std::endl;
+}
+
+bool
+MyBT::Cocina_2_B1()
+{
+  std::cout << "BBBBB22222222222" << std::endl;
+  std::cout << "Successful finished " << std::endl;
+
+  // Set the goal for next state, and execute plan
+  problem_expert_->setGoal(plansys2::Goal("(and(explored b1))"));
+
+  if (executor_client_->start_plan_execution()) {
+    state_ = B1;
+  }
+  return true;
 }
 
 void
-MyBT::State2_activateDeps()
+MyBT::Cocina_replan()
 {
+  std::cout << "BBBBB44444444444" << std::endl;
+  auto feedback = executor_client_->getFeedBack();
+  for (const auto & action_feedback : feedback.action_execution_status) {
+    if (action_feedback.status == plansys2_msgs::msg::ActionExecutionInfo::FAILED) {
+      std::cout << "[" << action_feedback.action << "] finished with error: " <<
+        action_feedback.message_status << std::endl;
+    }
+  }
+  executor_client_->start_plan_execution();  // replan and execute
 }
+
+
+/***B1***/
 void
-MyBT::Initial_activateDeps()
+MyBT::B1_code_iterative()
 {
+  std::cout << "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC" << std::endl;
+  auto feedback = executor_client_->getFeedBack();
+
+  for (const auto & action_feedback : feedback.action_execution_status) {
+    std::cout << "[" << action_feedback.action << " " <<
+      action_feedback.completion * 100.0 << "%]";
+  }
+  std::cout << std::endl;
+
 }
-void
-MyBT::State1_activateDeps()
+
+bool
+MyBT::B1_2_H1()
 {
+  std::cout << "Successful finished " << std::endl;
+
+  // Set the goal for next state, and execute plan
+  problem_expert_->setGoal(plansys2::Goal("(and(explored h1))"));
+
+  if (executor_client_->start_plan_execution()) {
+    state_ = H1;
+  }
+  return true;
+}
+
+void
+MyBT::B1_replan()
+{
+  auto feedback = executor_client_->getFeedBack();
+  for (const auto & action_feedback : feedback.action_execution_status) {
+    if (action_feedback.status == plansys2_msgs::msg::ActionExecutionInfo::FAILED) {
+      std::cout << "[" << action_feedback.action << "] finished with error: " <<
+        action_feedback.message_status << std::endl;
+    }
+  }
+  executor_client_->start_plan_execution();  // replan and execute
+}
+
+
+/***H1***/
+void
+MyBT::H1_code_iterative()
+{
+  std::cout << "DDDDDDDDDDDDDDDDDDDDDDD" << std::endl;
+  auto feedback = executor_client_->getFeedBack();
+
+  for (const auto & action_feedback : feedback.action_execution_status) {
+    std::cout << "[" << action_feedback.action << " " <<
+      action_feedback.completion * 100.0 << "%]";
+  }
+  std::cout << std::endl;
+
+}
+
+bool
+MyBT::H1_2_Cocina()
+{
+  std::cout << "Successful finished " << std::endl;
+
+  // Set the goal for next state, and execute plan
+  problem_expert_->setGoal(plansys2::Goal("(and(explored cocina))"));
+
+  if (executor_client_->start_plan_execution()) {
+    state_ = COCINA;
+  }
+  return true;
+}
+
+void
+MyBT::H1_replan()
+{
+  auto feedback = executor_client_->getFeedBack();
+  for (const auto & action_feedback : feedback.action_execution_status) {
+    if (action_feedback.status == plansys2_msgs::msg::ActionExecutionInfo::FAILED) {
+      std::cout << "[" << action_feedback.action << "] finished with error: " <<
+        action_feedback.message_status << std::endl;
+    }
+  }
+  executor_client_->start_plan_execution();  // replan and execute
 }
 
 

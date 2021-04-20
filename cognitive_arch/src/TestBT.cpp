@@ -25,18 +25,18 @@ public:
     : MyBT()
     {
     }
-    virtual bool State1_2_State2()
-    {
-        return (now()-state_ts_).seconds() > 1.0;
-    }
-    virtual bool Initial_2_State1()
-    {
-        return (now()-state_ts_).seconds() > 1.0;
-    }
-    virtual bool State2_2_Initial()
-    {
-        return (now()-state_ts_).seconds() > 1.0;
-    }
+    // virtual bool State1_2_State2()
+    // {
+    //     return (now()-state_ts_).seconds() > 1.0;
+    // }
+    // virtual bool Initial_2_State1()
+    // {
+    //     return (now()-state_ts_).seconds() > 1.0;
+    // }
+    // virtual bool State2_2_Initial()
+    // {
+    //     return (now()-state_ts_).seconds() > 1.0;
+    // }
 
     // virtual bool State1_2_State2()
     // {
