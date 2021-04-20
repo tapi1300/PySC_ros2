@@ -18,6 +18,7 @@ find_package(plansys2_msgs REQUIRED)
 find_package(plansys2_executor REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(plansys2_bt_actions REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
 set(dependencies
     rclcpp
@@ -32,12 +33,23 @@ set(dependencies
     plansys2_executor
     ament_index_cpp
     plansys2_bt_actions
+    geometry_msgs
 )
 
 include_directories(include)
 include_directories(fsm)
 
+add_library(cognitive_move_bt_node SHARED src/behavior_tree_nodes/Move.cpp)
+list(APPEND plugin_libs cognitive_move_bt_node)
 
+add_library(cognitive_pick_bt_node SHARED src/behavior_tree_nodes/Pick.cpp)
+list(APPEND plugin_libs cognitive_pick_bt_node )
+
+add_library(cognitive_drop_bt_node SHARED src/behavior_tree_nodes/Drop.cpp)
+list(APPEND plugin_libs cognitive_drop_bt_node )
+
+add_library(cognitive_search_bt_node SHARED src/behavior_tree_nodes/Search.cpp)
+list(APPEND plugin_libs cognitive_search_bt_node )
 
 
 foreach(bt_plugin ${plugin_libs})
@@ -53,7 +65,8 @@ add_executable(hfsm_main
 )
 ament_target_dependencies(hfsm_main ${dependencies})
 
-install(DIRECTORY fsm DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY fsm launch pddl behavior_trees_xml config DESTINATION share/${PROJECT_NAME})
+
 
 install(TARGETS
   hfsm_main
