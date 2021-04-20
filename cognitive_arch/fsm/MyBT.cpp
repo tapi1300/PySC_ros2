@@ -164,7 +164,7 @@ void MyBT::tick()
         if (executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
           H1_code_iterative();
           if (executor_client_->getResult().value().success) {
-            H1_2_Cocina();
+            return;
           } else {
             H1_replan();
           }
