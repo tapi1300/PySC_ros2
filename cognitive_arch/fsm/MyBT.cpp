@@ -135,7 +135,7 @@ void MyBT::tick()
       // Set the goal for next state, and execute plan
       problem_expert_->setGoal(
         plansys2::Goal(
-          "(and(robot_at r cocina))"));
+          "(and(explored cocina))"));
 
       if (executor_client_->start_plan_execution()) {
         state_ = STATE1;
@@ -160,7 +160,7 @@ void MyBT::tick()
 
 
             // Set the goal for next state, and execute plan
-            problem_expert_->setGoal(plansys2::Goal("(and(robot_at r pasillo))"));
+            problem_expert_->setGoal(plansys2::Goal("(and(explored h1))"));
 
             if (executor_client_->start_plan_execution()) {
               state_ = STATE2;
@@ -214,6 +214,8 @@ void MyBT::tick()
       }
       break;
   }
+
+  
 }
 
 void
