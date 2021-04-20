@@ -53,11 +53,22 @@ public:
   virtual void H1_code_iterative();
   virtual void H1_code_once() {}
   virtual void H1_replan();
+  virtual void B2_code_iterative();
+  virtual void B2_code_once() {}
+  virtual void B2_replan();
+  virtual void H2_code_iterative();
+  virtual void H2_code_once() {}
+  virtual void H2_replan();
+  virtual void FINAL_code_iterative();
+  virtual void FINAL_code_once() {}
+  virtual void FINAL_replan();
 
   virtual bool Cocina_2_B1();
-  virtual bool Initial_2_Cocina() {return false;}
+  virtual bool Initial_2_Cocina();
   virtual bool B1_2_H1();
-  virtual bool H1_2_Cocina();
+  virtual bool H1_2_B2();
+  virtual bool B2_2_H2();
+  virtual bool H2_2_FINAL();
   
   void init();
   void tick();
@@ -72,12 +83,16 @@ private:
   void Initial_activateDeps() {}
   void Cocina_activateDeps() {}
   void H1_activateDeps() {}
+  void FINAL_activateDeps() {}
 
 
   static const int B1 = 0;
   static const int INITIAL = 1;
   static const int COCINA = 2;
   static const int H1 = 3;
+  static const int B2 = 4;
+  static const int H2 = 5;
+  static const int FINAL = 6;
 
 
   int state_;

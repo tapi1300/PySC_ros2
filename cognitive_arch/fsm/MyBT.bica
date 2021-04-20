@@ -1,10 +1,15 @@
 <component id="MyBT">
- <state initial="false" x="523" y="-60" id="B1"/>
- <state initial="true" x="189" y="-60" id="Initial"/>
- <state initial="false" x="326" y="-240" id="Cocina"/>
- <state initial="false" x="326" y="120" id="H1"/>
+ <state initial="false" y="-241" id="Cocina" x="469"/>
+ <state initial="false" y="-113" id="FINAL" x="212"/>
+ <state initial="false" y="68" id="H2" x="220"/>
+ <state initial="true" y="-242" id="Initial" x="314"/>
+ <state initial="false" y="-117" id="B1" x="576"/>
+ <state initial="false" y="67" id="H1" x="579"/>
+ <state initial="false" y="169" id="B2" x="404"/>
  <transition src="Cocina" dst="B1"/>
  <transition src="Initial" dst="Cocina"/>
  <transition src="B1" dst="H1"/>
- <transition src="H1" dst="Initial"/>
+ <transition src="H1" dst="B2"/>
+ <transition src="B2" dst="H2"/>
+ <transition src="H2" dst="FINAL"/>
 </component>
