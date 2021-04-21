@@ -82,6 +82,9 @@ void MyBT::init()
   problem_expert_->addPredicate(plansys2::Predicate("(connected b2 pasillo)"));
   problem_expert_->addPredicate(plansys2::Predicate("(connected pasillo b2)"));
 
+  problem_expert_->addPredicate(plansys2::Predicate("(connected h2 pasillo)"));
+  problem_expert_->addPredicate(plansys2::Predicate("(connected pasillo h2)"));
+
   problem_expert_->addPredicate(plansys2::Predicate("(connected salon cocina)"));
   problem_expert_->addPredicate(plansys2::Predicate("(connected cocina salon)"));
 
@@ -370,7 +373,7 @@ MyBT::H1_replan()
 void
 MyBT::B2_code_iterative()
 {
-  std::cout << "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC" << std::endl;
+  std::cout << "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE" << std::endl;
   auto feedback = executor_client_->getFeedBack();
 
   for (const auto & action_feedback : feedback.action_execution_status) {
@@ -412,7 +415,7 @@ MyBT::B2_replan()
 void
 MyBT::H2_code_iterative()
 {
-  std::cout << "DDDDDDDDDDDDDDDDDDDDDDD" << std::endl;
+  std::cout << "FFFFFFFFFFFFFFFFFFFFFFFFFFFFF" << std::endl;
   auto feedback = executor_client_->getFeedBack();
 
   for (const auto & action_feedback : feedback.action_execution_status) {
@@ -431,7 +434,7 @@ MyBT::H2_2_FINAL()
   problem_expert_->setGoal(plansys2::Goal("(and(robot_at r salon))"));
 
   if (executor_client_->start_plan_execution()) {
-    state_ = B2;
+    state_ = FINAL;
   }
   return true;
 }
@@ -454,7 +457,7 @@ MyBT::H2_replan()
 void
 MyBT::FINAL_code_iterative()
 {
-  std::cout << "EEEEEEEEEEEEEEEEE" << std::endl;
+  std::cout << "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG" << std::endl;
   auto feedback = executor_client_->getFeedBack();
 
   for (const auto & action_feedback : feedback.action_execution_status) {

@@ -1,0 +1,121 @@
+-- The C compiler identification is GNU 9.3.0
+-- The CXX compiler identification is GNU 9.3.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 0.9.8 (/opt/ros/foxy/share/ament_cmake/cmake)
+-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.5", minimum required is "3") 
+-- Using PYTHON_EXECUTABLE: /usr/bin/python3
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found std_msgs: 2.0.4 (/opt/ros/foxy/share/std_msgs/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Found rosidl_adapter: 1.2.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+-- Found FastRTPS: /opt/ros/foxy/include  
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rclcpp: 2.3.1 (/opt/ros/foxy/share/rclcpp/cmake)
+-- Found rmw_implementation_cmake: 1.0.3 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE  
+-- Found rclcpp_cascade_lifecycle: 0.0.5 (/home/achrafnvl/ros2_foxy/install/rclcpp_cascade_lifecycle/share/rclcpp_cascade_lifecycle/cmake)
+-- Found geometry_msgs: 2.0.4 (/opt/ros/foxy/share/geometry_msgs/cmake)
+-- Found tf2_geometry_msgs: 0.13.10 (/opt/ros/foxy/share/tf2_geometry_msgs/cmake)
+-- Found eigen3_cmake_module: 0.1.1 (/opt/ros/foxy/share/eigen3_cmake_module/cmake)
+-- Found Eigen3: TRUE (found version "3.3.7") 
+-- Found nav2_msgs: 0.4.7 (/opt/ros/foxy/share/nav2_msgs/cmake)
+-- Found plansys2_msgs: 1.0.8 (/home/achrafnvl/ros2_foxy/install/plansys2_msgs/share/plansys2_msgs/cmake)
+-- Found plansys2_executor: 1.0.8 (/home/achrafnvl/ros2_foxy/install/plansys2_executor/share/plansys2_executor/cmake)
+-- Found plansys2_bt_actions: 1.0.8 (/home/achrafnvl/ros2_foxy/install/plansys2_bt_actions/share/plansys2_bt_actions/cmake)
+-- Found ament_lint_auto: 0.9.6 (/opt/ros/foxy/share/ament_lint_auto/cmake)
+-- Added test 'copyright' to check source files copyright and LICENSE
+-- Added test 'cppcheck' to perform static code analysis on C / C++ code
+-- Configured cppcheck include dirs: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/include;/home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/fsm
+-- Configured cppcheck exclude dirs and/or files: 
+-- Added test 'cpplint' to check C / C++ code against the Google style
+-- Configured cpplint exclude dirs and/or files: 
+-- Added test 'flake8' to check Python code syntax and style conventions
+-- Added test 'lint_cmake' to check CMake code style
+-- Added test 'pep257' to check Python code against some of the style conventions in PEP 257
+-- Added test 'uncrustify' to check C / C++ code style
+-- Configured uncrustify additional arguments: 
+-- Added test 'xmllint' to check XML markup files
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/build/cognitive_arch
+[35m[1mScanning dependencies of target cognitive_move_bt_node[0m
+[35m[1mScanning dependencies of target cognitive_search_bt_node[0m
+[35m[1mScanning dependencies of target cognitive_pick_bt_node[0m
+[35m[1mScanning dependencies of target hfsm_main[0m
+[35m[1mScanning dependencies of target cognitive_drop_bt_node[0m
+[  9%] [32mBuilding CXX object CMakeFiles/cognitive_pick_bt_node.dir/src/behavior_tree_nodes/Pick.cpp.o[0m
+[ 18%] [32mBuilding CXX object CMakeFiles/cognitive_drop_bt_node.dir/src/behavior_tree_nodes/Drop.cpp.o[0m
+[ 27%] [32mBuilding CXX object CMakeFiles/cognitive_search_bt_node.dir/src/behavior_tree_nodes/Search.cpp.o[0m
+[ 36%] [32mBuilding CXX object CMakeFiles/cognitive_move_bt_node.dir/src/behavior_tree_nodes/Move.cpp.o[0m
+[ 45%] [32mBuilding CXX object CMakeFiles/hfsm_main.dir/fsm/MyBT.cpp.o[0m
+[ 54%] [32mBuilding CXX object CMakeFiles/hfsm_main.dir/src/TestBT.cpp.o[0m
+[ 63%] [32m[1mLinking CXX shared library libcognitive_pick_bt_node.so[0m
+[ 63%] Built target cognitive_pick_bt_node
+[ 72%] [32m[1mLinking CXX shared library libcognitive_drop_bt_node.so[0m
+[ 72%] Built target cognitive_drop_bt_node
+[ 81%] [32m[1mLinking CXX shared library libcognitive_search_bt_node.so[0m
+[ 81%] Built target cognitive_search_bt_node
+[ 90%] [32m[1mLinking CXX executable hfsm_main[0m
+[100%] [32m[1mLinking CXX shared library libcognitive_move_bt_node.so[0m
+[100%] Built target cognitive_move_bt_node
+[100%] Built target hfsm_main
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/fsm/MyBT.bica
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/fsm/MyBT.cpp
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/fsm/MyBT.hpp
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/fsm/rosgraph.svg
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/launch/cognitive_arch_launch.py
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/launch/commands
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/pddl/cognitive_domain.pddl
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/pddl/house_problem.pddl
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/pddl/house_problem_2.pddl
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/behavior_trees_xml/drop.xml
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/behavior_trees_xml/move.xml
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/behavior_trees_xml/move_out_zone.xml
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/behavior_trees_xml/move_to_zone.xml
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/behavior_trees_xml/pick.xml
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/behavior_trees_xml/search.xml
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/config/params.yaml
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/lib/cognitive_arch/hfsm_main
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/lib/libcognitive_move_bt_node.so
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/lib/libcognitive_pick_bt_node.so
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/lib/libcognitive_drop_bt_node.so
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/lib/libcognitive_search_bt_node.so
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/ament_index/resource_index/package_run_dependencies/cognitive_arch
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/ament_index/resource_index/parent_prefix_path/cognitive_arch
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/environment/ament_prefix_path.sh
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/environment/ament_prefix_path.dsv
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/environment/path.sh
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/environment/path.dsv
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/local_setup.bash
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/local_setup.sh
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/local_setup.zsh
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/local_setup.dsv
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/package.dsv
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/ament_index/resource_index/packages/cognitive_arch
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/cmake/cognitive_archConfig.cmake
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/cmake/cognitive_archConfig-version.cmake
+-- Symlinking: /home/achrafnvl/ros2_foxy/src/PySC_ros2/cognitive_arch/install/cognitive_arch/share/cognitive_arch/package.xml
