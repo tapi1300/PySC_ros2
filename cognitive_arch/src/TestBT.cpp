@@ -171,7 +171,7 @@ public:
         std::cout << std::endl;
     }
 
-    virtual bool B1_2_B1()
+    virtual bool B1_2_H1()
     {
         if (executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
           if (executor_client_->getResult().value().success) {
