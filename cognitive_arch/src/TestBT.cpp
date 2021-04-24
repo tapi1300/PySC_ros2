@@ -22,6 +22,8 @@
 #include "plansys2_executor/ExecutorClient.hpp"
 #include "plansys2_problem_expert/ProblemExpertClient.hpp"
 
+#include "cognitive_arch/blackboard/BlackBoard.hpp"
+
 
 
 
@@ -39,6 +41,7 @@ public:
     /***INITIAL***/
     virtual void Initial_code_once()
     {
+        blackboard = blackboard::BlackBoard::make_shared();
         auto aux_node = rclcpp::Node::make_shared("aux");
 
         problem_expert_ = std::make_shared<plansys2::ProblemExpertClient>(aux_node);
@@ -94,13 +97,6 @@ public:
         problem_expert_->addPredicate(plansys2::Predicate("(zone_at z3 cocina)"));
         problem_expert_->addPredicate(plansys2::Predicate("(zone_at z4 cocina)"));
         problem_expert_->addPredicate(plansys2::Predicate("(zone_at z5 h1)"));
-
-
-        std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
-        // // Set the goal for next state, and execute plan
-        // problem_expert_->setGoal(
-        //     plansys2::Goal(
-        //     "(and(explored cocina))"));
     }
 
     virtual void Initial_code_iterative() {return;}
@@ -115,7 +111,7 @@ public:
     virtual void Cocina_code_once()
     {
         // Set the goal for next state, and execute plan
-        std::cout << "B parte 1" << std::endl;
+
         problem_expert_->setGoal(
             plansys2::Goal(
             "(and(explored cocina))"));
@@ -124,7 +120,7 @@ public:
 
     virtual void Cocina_code_iterative()
     {
-        std::cout << "BBBBBBBBBBB" << std::endl;
+
         auto feedback = executor_client_->getFeedBack();
 
         for (const auto & action_feedback : feedback.action_execution_status) {
@@ -147,7 +143,6 @@ public:
                     action_feedback.message_status << std::endl;
                 }
             }
-            std::cout << "22222222222222222" << std::endl;
             executor_client_->start_plan_execution();  // replan and execute
           }
         }
@@ -167,7 +162,6 @@ public:
 
     virtual void B1_code_iterative()
     {
-        std::cout << "CCCCCCCCCCCCCC" << std::endl;
         auto feedback = executor_client_->getFeedBack();
 
         for (const auto & action_feedback : feedback.action_execution_status) {
@@ -209,7 +203,6 @@ public:
 
     virtual void H1_code_iterative()
     {
-        std::cout << "DDDDDDDDDDDDD" << std::endl;
         auto feedback = executor_client_->getFeedBack();
 
         for (const auto & action_feedback : feedback.action_execution_status) {
@@ -251,7 +244,6 @@ public:
 
     virtual void B2_code_iterative()
     {
-        std::cout << "EEEEEEEEEEEE" << std::endl;
         auto feedback = executor_client_->getFeedBack();
 
         for (const auto & action_feedback : feedback.action_execution_status) {
@@ -293,7 +285,6 @@ public:
 
     virtual void H2_code_iterative()
     {
-        std::cout << "FFFFFFFFFFFFFFFFFF" << std::endl;
         auto feedback = executor_client_->getFeedBack();
 
         for (const auto & action_feedback : feedback.action_execution_status) {
@@ -335,7 +326,6 @@ public:
 
     virtual void FINAL_code_iterative()
     {
-        std::cout << "GGGGGGGGGGGGGGGGGG" << std::endl;
         auto feedback = executor_client_->getFeedBack();
 
         for (const auto & action_feedback : feedback.action_execution_status) {
@@ -362,6 +352,7 @@ public:
     private:
         std::shared_ptr<plansys2::ProblemExpertClient> problem_expert_;
         std::shared_ptr<plansys2::ExecutorClient> executor_client_;
+        blackboard::BlackBoard::Ptr blackboard;
 };
 
 int main(int argc, char ** argv)
@@ -373,9 +364,6 @@ int main(int argc, char ** argv)
     rclcpp::executors::SingleThreadedExecutor executor;
 
     executor.add_node(node->get_node_base_interface());
-    std::cout << "perro bajate warro 1" << std::endl;
-    // node->init();
-    std::cout << "perro bajate warro 2" << std::endl;
     node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
     executor.spin_some();
     node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);

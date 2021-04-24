@@ -53,12 +53,14 @@ list(APPEND plugin_libs cognitive_drop_bt_node )
 add_library(cognitive_search_bt_node SHARED src/behavior_tree_nodes/Search.cpp)
 list(APPEND plugin_libs cognitive_search_bt_node )
 
-add_library(${PROJECT_NAME} SHARED
+add_library(blackboard SHARED
   src/blackboard/BlackBoard.cpp
   src/blackboard/BlackBoardNode.cpp
   src/blackboard/BlackBoardClient.cpp
 )
-ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+ament_target_dependencies(blackboard ${dependencies})
+
+
 
 
 
@@ -74,6 +76,8 @@ add_executable(hfsm_main
   fsm/MyBT.cpp
 )
 ament_target_dependencies(hfsm_main ${dependencies})
+
+target_link_libraries(hfsm_main blackboard)
 
 install(DIRECTORY fsm launch pddl behavior_trees_xml config DESTINATION share/${PROJECT_NAME})
 
