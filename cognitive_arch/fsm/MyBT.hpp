@@ -1,32 +1,12 @@
-// Copyright 2021 El Grupo Del Flow
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// NOLINT (legal/copyright) 
 
 #ifndef MYBT_H_
 #define MYBT_H_
 
 #include <string>
-#include <memory>
 
 #include "std_msgs/msg/string.hpp"
 #include "rclcpp_cascade_lifecycle/rclcpp_cascade_lifecycle.hpp"
-#include "plansys2_msgs/msg/action_execution_info.hpp"
-
-#include "plansys2_executor/ExecutorClient.hpp"
-#include "plansys2_problem_expert/ProblemExpertClient.hpp"
-
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_action/rclcpp_action.hpp"
 
 namespace cascade_hfsm
 {
@@ -42,57 +22,52 @@ public:
   virtual rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
   on_deactivate(const rclcpp_lifecycle::State & previous_state);
 
-  virtual void Initial_code_iterative() {}
-  virtual void Initial_code_once();
-  virtual void Cocina_code_iterative();
+  virtual void Cocina_code_iterative() {}
   virtual void Cocina_code_once() {}
-  virtual void Cocina_replan();
-  virtual void B1_code_iterative();
-  virtual void B1_code_once() {}
-  virtual void B1_replan();
-  virtual void H1_code_iterative();
-  virtual void H1_code_once() {}
-  virtual void H1_replan();
-  virtual void B2_code_iterative();
-  virtual void B2_code_once() {}
-  virtual void B2_replan();
-  virtual void H2_code_iterative();
-  virtual void H2_code_once() {}
-  virtual void H2_replan();
-  virtual void FINAL_code_iterative();
+  virtual void FINAL_code_iterative() {}
   virtual void FINAL_code_once() {}
-  virtual void FINAL_replan();
+  virtual void H2_code_iterative() {}
+  virtual void H2_code_once() {}
+  virtual void Initial_code_iterative() {}
+  virtual void Initial_code_once() {}
+  virtual void B1_code_iterative() {}
+  virtual void B1_code_once() {}
+  virtual void H1_code_iterative() {}
+  virtual void H1_code_once() {}
+  virtual void B2_code_iterative() {}
+  virtual void B2_code_once() {}
 
-  virtual bool Cocina_2_B1();
-  virtual bool Initial_2_Cocina();
-  virtual bool B1_2_H1();
-  virtual bool H1_2_B2();
-  virtual bool B2_2_H2();
-  virtual bool H2_2_FINAL();
-  
-  void init();
+  virtual bool Cocina_2_B1() {return false;}
+  virtual bool B1_2_H1() {return false;}
+  virtual bool Initial_2_Cocina() {return false;}
+  virtual bool B2_2_H2() {return false;}
+  virtual bool H1_2_B2() {return false;}
+  virtual bool H2_2_FINAL() {return false;}
+
+
   void tick();
-  bool get_result(){return executor_client_->getResult().value().success;}
 
 protected:
   rclcpp::Time state_ts_;
 
 private:
-  void deactivateAllDeps() {}
-  void B1_activateDeps() {}
-  void Initial_activateDeps() {}
-  void Cocina_activateDeps() {}
-  void H1_activateDeps() {}
-  void FINAL_activateDeps() {}
+  void deactivateAllDeps();
+  void Cocina_activateDeps();
+  void FINAL_activateDeps();
+  void H2_activateDeps();
+  void Initial_activateDeps();
+  void B1_activateDeps();
+  void H1_activateDeps();
+  void B2_activateDeps();
 
 
-  static const int B1 = 0;
-  static const int INITIAL = 1;
-  static const int COCINA = 2;
-  static const int H1 = 3;
-  static const int B2 = 4;
-  static const int H2 = 5;
-  static const int FINAL = 6;
+  static const int COCINA = 0;
+  static const int FINAL = 1;
+  static const int H2 = 2;
+  static const int INITIAL = 3;
+  static const int B1 = 4;
+  static const int H1 = 5;
+  static const int B2 = 6;
 
 
   int state_;
@@ -100,8 +75,6 @@ private:
   std::string myBaseId_;
   rclcpp_lifecycle::LifecyclePublisher<std_msgs::msg::String>::SharedPtr state_pub_;
   rclcpp::TimerBase::SharedPtr loop_timer_;
-  std::shared_ptr<plansys2::ProblemExpertClient> problem_expert_;
-  std::shared_ptr<plansys2::ExecutorClient> executor_client_;
 };
 
 }  // namespace cascade_hfsm
