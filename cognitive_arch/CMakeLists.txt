@@ -19,6 +19,7 @@ find_package(plansys2_executor REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(plansys2_bt_actions REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(blackboard_msgs REQUIRED)
 
 set(dependencies
     rclcpp
@@ -34,6 +35,7 @@ set(dependencies
     ament_index_cpp
     plansys2_bt_actions
     geometry_msgs
+    blackboard_msgs
 )
 
 include_directories(include)
@@ -50,6 +52,14 @@ list(APPEND plugin_libs cognitive_drop_bt_node )
 
 add_library(cognitive_search_bt_node SHARED src/behavior_tree_nodes/Search.cpp)
 list(APPEND plugin_libs cognitive_search_bt_node )
+
+add_library(${PROJECT_NAME} SHARED
+  src/blackboard/BlackBoard.cpp
+  src/blackboard/BlackBoardNode.cpp
+  src/blackboard/BlackBoardClient.cpp
+)
+ament_target_dependencies(${PROJECT_NAME} ${dependencies})
+
 
 
 foreach(bt_plugin ${plugin_libs})
