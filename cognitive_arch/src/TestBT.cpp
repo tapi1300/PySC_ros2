@@ -134,7 +134,10 @@ public:
     {
         if (executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
           if (executor_client_->getResult().value().success) {
-            return true;
+            B1_code_once();
+            if (executor_client_->start_plan_execution()) {
+                return true;
+            }
           } else {
             auto feedback = executor_client_->getFeedBack();
             for (const auto & action_feedback : feedback.action_execution_status) {
@@ -157,7 +160,6 @@ public:
         problem_expert_->setGoal(
             plansys2::Goal(
             "(and(explored b1))"));
-        executor_client_->start_plan_execution();
     }
 
     virtual void B1_code_iterative()
@@ -175,7 +177,10 @@ public:
     {
         if (executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
           if (executor_client_->getResult().value().success) {
-            return true;
+            H1_code_once();
+            if (executor_client_->start_plan_execution()) {
+                return true;
+            }
           } else {
             auto feedback = executor_client_->getFeedBack();
             for (const auto & action_feedback : feedback.action_execution_status) {
@@ -198,7 +203,6 @@ public:
         problem_expert_->setGoal(
             plansys2::Goal(
             "(and(explored h1))"));
-        executor_client_->start_plan_execution();
     }
 
     virtual void H1_code_iterative()
@@ -216,7 +220,10 @@ public:
     {
         if (executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
           if (executor_client_->getResult().value().success) {
-            return true;
+            B2_code_once();
+            if (executor_client_->start_plan_execution()) {
+                return true;
+            }
           } else {
             auto feedback = executor_client_->getFeedBack();
             for (const auto & action_feedback : feedback.action_execution_status) {
@@ -239,7 +246,6 @@ public:
         problem_expert_->setGoal(
             plansys2::Goal(
             "(and(explored b2))"));
-        executor_client_->start_plan_execution();
     }
 
     virtual void B2_code_iterative()
@@ -257,7 +263,10 @@ public:
     {
         if (executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
           if (executor_client_->getResult().value().success) {
-            return true;
+            H2_code_once();
+            if (executor_client_->start_plan_execution()) {
+                return true;
+            }
           } else {
             auto feedback = executor_client_->getFeedBack();
             for (const auto & action_feedback : feedback.action_execution_status) {
@@ -280,7 +289,6 @@ public:
         problem_expert_->setGoal(
             plansys2::Goal(
             "(and(explored h2))"));
-        executor_client_->start_plan_execution();
     }
 
     virtual void H2_code_iterative()
@@ -298,7 +306,10 @@ public:
     {
         if (executor_client_->execute_and_check_plan() && executor_client_->getResult()) {
           if (executor_client_->getResult().value().success) {
-            return true;
+            FINAL_code_once();
+            if (executor_client_->start_plan_execution()) {
+                return true;
+            }
           } else {
             auto feedback = executor_client_->getFeedBack();
             for (const auto & action_feedback : feedback.action_execution_status) {
@@ -321,7 +332,6 @@ public:
         problem_expert_->setGoal(
             plansys2::Goal(
             "(and(robot_at r salon))"));
-        executor_client_->start_plan_execution();
     }
 
     virtual void FINAL_code_iterative()
