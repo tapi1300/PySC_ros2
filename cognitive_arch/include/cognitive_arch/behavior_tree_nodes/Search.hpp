@@ -20,6 +20,7 @@
 #include "behaviortree_cpp_v3/behavior_tree.h"
 #include "behaviortree_cpp_v3/bt_factory.h"
 #include "geometry_msgs/msg/twist.hpp"
+#include "sensor_msgs/msg/image.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 namespace plansys2_search
@@ -41,9 +42,12 @@ public:
   }
 
 private:
+  
   int counter_;
+  
   geometry_msgs::msg::Twist giro;
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr num_pub;
+  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_kinect;
 };
 
 }  // namespace plansys2_search

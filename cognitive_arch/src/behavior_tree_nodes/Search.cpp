@@ -19,18 +19,32 @@
 #include "geometry_msgs/msg/twist.hpp"
 #include "behaviortree_cpp_v3/behavior_tree.h"
 
+using std::placeholders::_1;
+using std::placeholders::_2;
+
+rclcpp::Node::SharedPtr node = nullptr;
 namespace plansys2_search
 {
+
+void callback(const sensor_msgs::msg::Image::SharedPtr msg)
+{
+  std::cout << "TUS MUERTOS" << std::endl;
+}
 
 Search::Search(
   const std::string & xml_tag_name,
   const BT::NodeConfiguration & conf)
 : BT::ActionNodeBase(xml_tag_name, conf), counter_(0)
 {
-    auto node = rclcpp::Node::make_shared("simple_node_pub");
+    node = rclcpp::Node::make_shared("simple_node_pub");
     num_pub = node->create_publisher<geometry_msgs::msg::Twist>(
     "/cmd_vel", 100);
+    sub_kinect = node->create_subscription<sensor_msgs::msg::Image>(
+      "/kinect_color/image_raw", rclcpp::SensorDataQoS(), callback);
+    
 }
+
+
 
 void
 Search::halt()
@@ -42,10 +56,10 @@ BT::NodeStatus
 Search::tick()
 {
   std::cout << "Search tick " << counter_ << std::endl;
-
+  
   giro.linear.x = 0.0;
   giro.angular.z = -0.30;
-
+  rclcpp::spin_some(node);
   num_pub->publish(giro);
 //   if (objecto_encontrado) {
 //       palablackboard;
