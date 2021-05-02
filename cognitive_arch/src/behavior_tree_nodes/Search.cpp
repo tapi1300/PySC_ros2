@@ -23,6 +23,7 @@
 #include <sensor_msgs/image_encodings.hpp>
 #include "cognitive_arch/behavior_tree_nodes/Search.hpp"
 #include "geometry_msgs/msg/twist.hpp"
+#include "tf2_msgs/msg/tf_message.hpp"
 #include "behaviortree_cpp_v3/behavior_tree.h"
 
 
@@ -30,8 +31,63 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 
 rclcpp::Node::SharedPtr node = nullptr;
+cv::Point centroid;
+
 namespace plansys2_search
 {
+
+
+
+
+void publicar_tf(const sensor_msgs::msg::Image::SharedPtr msg)
+{
+  std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\n\n\n\n" << std::endl;
+  std::cout << msg->data[1] << std::endl;
+  cv::waitKey();
+  // f2dto3d(msg_pc, center_x, center_y);
+
+  // x3 = point.z;
+  // y3 = -point.x;
+  // z3 = -point.y;
+  
+  // tf2::Stamped<tf2::Transform> persona;
+  // persona.frame_id_ = "base_footprint";
+  // persona.stamp_ = ros::Time::now();
+
+  // persona.setOrigin(tf2::Vector3(x3, y3, z3));
+
+  // tf2::Quaternion q;
+  // q.setRPY(0, 0, 0);
+  // persona.setRotation(q);
+
+  // geometry_msgs::TransformStamped persona_msg = tf2::toMsg(persona);
+  // persona_msg.child_frame_id = "object";
+  // tfBroadcaster_.sendTransform(persona_msg);
+
+  // ROS_INFO("(%f, %f, %f)", x3, y3, z3);
+
+  // sub_tf.shutdown();
+
+}
+
+// void f2dto3d(const sensor_msgs::PointCloud2 msg_pc, const int x, const int y)
+// {
+//   int postdata =  x * msg_pc.point_step + y * msg_pc.row_step;
+
+//   memcpy(&cx, &msg_pc.data[postdata + msg_pc.fields[0].offset], sizeof(float));
+//   memcpy(&cy, &msg_pc.data[postdata + msg_pc.fields[1].offset], sizeof(float));
+//   memcpy(&cz, &msg_pc.data[postdata + msg_pc.fields[2].offset], sizeof(float));
+
+
+//   point.x = cx;
+//   point.y = cy;
+//   point.z = cz;
+// }
+
+
+
+
+
 
 void callback(const sensor_msgs::msg::Image::SharedPtr msg)
 {
@@ -59,15 +115,29 @@ void callback(const sensor_msgs::msg::Image::SharedPtr msg)
   cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, kernel);
 
   if(cv::countNonZero(mask) > 0){
+    // Ha encontrado un objeto Rojo
 
-  cv::Moments mu = cv::moments(mask);
+    cv::Moments mu = cv::moments(mask);
 
-  cv::Point centroid;
+    if(mu.m00 > 0)
+    {
+      std::cout << " hgafuyehbauigojnhjagidbeahgbjznha uaf jabhjf BSFUAJF BAUHFK BASHFJB" << std::endl;
 
-  centroid.x = mu.m10/mu.m00;
-  centroid.y = mu.m01/mu.m00;
+      centroid.x = mu.m10/mu.m00;
+      centroid.y = mu.m01/mu.m00;
 
-  circle(mask, centroid, 4, cv::Scalar(0,255,0), 3, cv::LINE_AA);
+      circle(mask, centroid, 4, cv::Scalar(0,255,0), 3, cv::LINE_AA);
+
+      rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_depth;
+      sub_depth = node->create_subscription<sensor_msgs::msg::Image>(
+        "/kinect_range/image_depth", rclcpp::SensorDataQoS(), publicar_tf);
+      std::cout << " 2222222 uaf jabhjf BSFUAJF BAUHFK BASHFJB" << std::endl;
+
+    }
+
+
+
+
   }
 
   cv::imshow("Mask", mask);
