@@ -53,12 +53,25 @@ void callback(const sensor_msgs::msg::Image::SharedPtr msg)
   cv::inRange(hsv_image, cv::Scalar(175, 150, 50), cv::Scalar(180, 255, 255), high_mask);
 
   cv::Mat mask = low_mask | high_mask;
-  cv::Mat kernel = cv::Mat::ones(3, 3, CV_8UC1);
+  cv::Mat kernel = cv::Mat::ones(6, 6, CV_8UC1);
 
   cv::morphologyEx(mask, mask, cv::MORPH_OPEN, kernel);
   cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, kernel);
 
+  if(cv::countNonZero(mask) > 0){
+
+  cv::Moments mu = cv::moments(mask);
+
+  cv::Point centroid;
+
+  centroid.x = mu.m10/mu.m00;
+  centroid.y = mu.m01/mu.m00;
+
+  circle(mask, centroid, 4, cv::Scalar(0,255,0), 3, cv::LINE_AA);
+  }
+
   cv::imshow("Mask", mask);
+
 
   
   }
