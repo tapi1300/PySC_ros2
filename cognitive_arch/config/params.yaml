@@ -4,7 +4,7 @@ move:
       - cognitive_move_bt_node
     waypoints: ["salon", "pasillo", "cocina", "h1", "h2", "b1", "b2", "z1", "z2", "z3", "z4", "z5"]
     waypoint_coords:
-      salon: [0.44, 1.41, 0.0]
+      salon: [1.30,3.04, 0.0]
       pasillo: [-2.11, -1.02, 0.0]
       cocina: [1.57, -2.40, 0.0]
       h1: [-3.66, 1.25, 0.0]
@@ -22,7 +22,7 @@ move_to_zone:
       - cognitive_move_bt_node
     waypoints: ["salon", "pasillo", "cocina", "h1", "h2", "b1", "b2", "z1", "z2", "z3", "z4", "z5"]
     waypoint_coords:
-      salon: [0.44, 1.41, 0.0]
+      salon: [1.30,3.04, 0.0]
       pasillo: [-2.11, -1.02, 0.0]
       cocina: [1.57, -2.40, 0.0]
       h1: [-3.66, 1.25, 0.0]
@@ -40,7 +40,7 @@ move_out_zone:
       - cognitive_move_bt_node
     waypoints: ["salon", "pasillo", "cocina", "h1", "h2", "b1", "b2", "z1", "z2", "z3", "z4", "z5"]
     waypoint_coords:
-      salon: [0.44, 1.41, 0.0]
+      salon: [1.30,3.04, 0.0]
       pasillo: [-2.11, -1.02, 0.0]
       cocina: [1.57, -2.40, 0.0]
       h1: [-3.66, 1.25, 0.0]

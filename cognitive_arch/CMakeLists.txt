@@ -18,8 +18,9 @@ find_package(plansys2_msgs REQUIRED)
 find_package(plansys2_executor REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(plansys2_bt_actions REQUIRED)
-find_package(geometry_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(blackboard_msgs REQUIRED)
+
 
 set(dependencies
     rclcpp
@@ -34,7 +35,7 @@ set(dependencies
     plansys2_executor
     ament_index_cpp
     plansys2_bt_actions
-    geometry_msgs
+    sensor_msgs
     blackboard_msgs
 )
 
