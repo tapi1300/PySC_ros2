@@ -20,6 +20,9 @@ find_package(ament_index_cpp REQUIRED)
 find_package(plansys2_bt_actions REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(blackboard_msgs REQUIRED)
+find_package(cv_bridge REQUIRED)
+find_package(image_transport REQUIRED)
+# find_package(OpenCV 2 REQUIRED)
 
 
 set(dependencies
@@ -37,10 +40,13 @@ set(dependencies
     plansys2_bt_actions
     sensor_msgs
     blackboard_msgs
+    cv_bridge
+    image_transport
 )
 
 include_directories(include)
 include_directories(fsm)
+include_directories(OpenCV)
 
 add_library(cognitive_move_bt_node SHARED src/behavior_tree_nodes/Move.cpp)
 list(APPEND plugin_libs cognitive_move_bt_node)
