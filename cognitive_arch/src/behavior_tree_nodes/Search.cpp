@@ -41,7 +41,6 @@ void callback(const sensor_msgs::msg::Image::SharedPtr msg)
     cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
   }
   catch(cv_bridge::Exception &e){
-    // ROS_ERROR("cv_bridge exception %s", e.what());
     return;
   }
 
@@ -50,14 +49,18 @@ void callback(const sensor_msgs::msg::Image::SharedPtr msg)
 
   cv::cvtColor(cv_ptr->image, hsv_image, cv::COLOR_BGR2HSV);
 
-  cv::inRange(hsv_image, cv::Scalar(0, 70, 50), cv::Scalar(10, 255, 255), low_mask);
-  cv::inRange(hsv_image, cv::Scalar(170, 70, 50), cv::Scalar(180, 255, 255), high_mask);
+  cv::inRange(hsv_image, cv::Scalar(0, 150, 50), cv::Scalar(10, 255, 255), low_mask);
+  cv::inRange(hsv_image, cv::Scalar(175, 150, 50), cv::Scalar(180, 255, 255), high_mask);
 
-  cv::Mat mask = low_mask + high_mask;
+  cv::Mat mask = low_mask | high_mask;
+  cv::Mat kernel = cv::Mat::ones(3, 3, CV_8UC1);
 
-  cv::bitwise_and(hsv_image, hsv_image, mask);
+  cv::morphologyEx(mask, mask, cv::MORPH_OPEN, kernel);
+  cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, kernel);
 
-  cv::imshow("Prueba", hsv_image);
+  cv::imshow("Mask", mask);
+
+  
   }
 
 Search::Search(
@@ -83,7 +86,7 @@ BT::NodeStatus
 Search::tick()
 {
   std::cout << "Search tick " << counter_ << std::endl;
-  
+  cv::waitKey(1);
   giro.linear.x = 0.0;
   giro.angular.z = -0.30;
   rclcpp::spin_some(node);
