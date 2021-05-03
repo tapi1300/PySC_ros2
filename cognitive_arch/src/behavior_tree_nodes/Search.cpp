@@ -31,6 +31,8 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 
 rclcpp::Node::SharedPtr node = nullptr;
+bool not_created;
+rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_depth;
 cv::Point centroid;
 
 namespace plansys2_search
@@ -41,10 +43,13 @@ namespace plansys2_search
 
 void publicar_tf(const sensor_msgs::msg::Image::SharedPtr msg)
 {
-  std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\n\n\n\n" << std::endl;
-  std::cout << msg->data[1] << std::endl;
+  std::cout << "BBBBBBBBBBBBBBBBBBBBBBBBB\n\n\n\n\n\n" << std::endl;
+  std::cout << sizeof(msg->data)/sizeof(msg->data[0])<< " sizeof" << std::endl;
+  std::cout << msg->height << " height" << std::endl;
+  std::cout << msg->width << " width" << std::endl;
+
   cv::waitKey();
-  // f2dto3d(msg_pc, center_x, center_y);
+  // f2dto3d(msg, center_x, center_y);
 
   // x3 = point.z;
   // y3 = -point.x;
@@ -72,7 +77,7 @@ void publicar_tf(const sensor_msgs::msg::Image::SharedPtr msg)
 
 // void f2dto3d(const sensor_msgs::PointCloud2 msg_pc, const int x, const int y)
 // {
-//   int postdata =  x * msg_pc.point_step + y * msg_pc.row_step;
+//   int postdata =  x * step.point_step + y * step.row_step;
 
 //   memcpy(&cx, &msg_pc.data[postdata + msg_pc.fields[0].offset], sizeof(float));
 //   memcpy(&cy, &msg_pc.data[postdata + msg_pc.fields[1].offset], sizeof(float));
@@ -81,7 +86,7 @@ void publicar_tf(const sensor_msgs::msg::Image::SharedPtr msg)
 
 //   point.x = cx;
 //   point.y = cy;
-//   point.z = cz;
+//   point.z = 0;
 // }
 
 
@@ -127,11 +132,14 @@ void callback(const sensor_msgs::msg::Image::SharedPtr msg)
       centroid.y = mu.m01/mu.m00;
 
       circle(mask, centroid, 4, cv::Scalar(0,255,0), 3, cv::LINE_AA);
-
-      rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_depth;
-      sub_depth = node->create_subscription<sensor_msgs::msg::Image>(
-        "/kinect_range/image_depth", rclcpp::SensorDataQoS(), publicar_tf);
+      if(not_created)
+      {
+        sub_depth = node->create_subscription<sensor_msgs::msg::Image>(
+          "/kinect_range/image_depth", rclcpp::SensorDataQoS(), publicar_tf);
+        not_created = false;
+      }
       std::cout << " 2222222 uaf jabhjf BSFUAJF BAUHFK BASHFJB" << std::endl;
+
 
     }
 
@@ -151,12 +159,12 @@ Search::Search(
   const BT::NodeConfiguration & conf)
 : BT::ActionNodeBase(xml_tag_name, conf), counter_(0)
 {
-    node = rclcpp::Node::make_shared("simple_node_pub");
+    not_created = true;
+    node = rclcpp::Node::make_shared("search_aux");
     num_pub = node->create_publisher<geometry_msgs::msg::Twist>(
     "/cmd_vel", 100);
     sub_kinect = node->create_subscription<sensor_msgs::msg::Image>(
-      "/kinect_color/image_raw", rclcpp::SensorDataQoS(), callback);
-    
+      "/kinect_color/image_raw", rclcpp::SensorDataQoS(), callback);    
 }
 
 void
@@ -174,9 +182,7 @@ Search::tick()
   giro.angular.z = -0.30;
   rclcpp::spin_some(node);
   num_pub->publish(giro);
-//   if (objecto_encontrado) {
-//       palablackboard;
-//   }
+  
   if (counter_++ < 20) {
     return BT::NodeStatus::RUNNING;
   } else {
