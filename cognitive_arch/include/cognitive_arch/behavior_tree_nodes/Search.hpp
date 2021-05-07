@@ -51,6 +51,7 @@ private:
   int counter_;
   
   geometry_msgs::msg::Twist giro;
+  
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr num_pub;
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_kinect;
 };
