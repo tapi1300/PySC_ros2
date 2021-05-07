@@ -194,7 +194,6 @@ Search::tick()
 
 }  // namespace plansys2_search
 
-#include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)
 {
   factory.registerNodeType<plansys2_search::Search>("Search");
