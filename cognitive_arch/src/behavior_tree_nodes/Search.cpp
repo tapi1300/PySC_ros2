@@ -34,6 +34,8 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 
 rclcpp::Node::SharedPtr node = nullptr;
+bool not_created;
+rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_depth;
 cv::Point centroid;
 geometry_msgs::msg::Point point;
 float cx, cy, cz;
@@ -62,7 +64,6 @@ void f2dto3d(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc, const int x,
 
 void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
 {
-
   std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\n"<< std::endl;
 
   int center_x = centroid.x;
@@ -92,22 +93,8 @@ void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
   persona.transforms[0].transform.rotation=q;
   // persona.transforms.child_frame_id = "object";
   tf_pub->publish(persona);
-  
-
-  // tfBroadcaster_.sendTransform(persona_msg);
-
-  // ROS_INFO("(%f, %f, %f)", x3, y3, z3);
-
-  // sub_tf.shutdown();
 
 }
-
-
-
-
-
-
-
 
 void callback(const sensor_msgs::msg::Image::SharedPtr msg)
 {
@@ -173,13 +160,12 @@ Search::Search(
   const BT::NodeConfiguration & conf)
 : BT::ActionNodeBase(xml_tag_name, conf), counter_(0)
 {
-    node = rclcpp::Node::make_shared("simple_node_pub");
+    not_created = true;
+    node = rclcpp::Node::make_shared("search_aux");
     num_pub = node->create_publisher<geometry_msgs::msg::Twist>(
     "/cmd_vel", 100);
     sub_kinect = node->create_subscription<sensor_msgs::msg::Image>(
       "/kinect_color/image_raw", rclcpp::SensorDataQoS(), callback);
-    
-    
 }
 
 void
@@ -197,9 +183,7 @@ Search::tick()
   giro.angular.z = -0.30;
   rclcpp::spin_some(node);
   num_pub->publish(giro);
-//   if (objecto_encontrado) {
-//       palablackboard;
-//   }
+  
   if (counter_++ < 20) {
     return BT::NodeStatus::RUNNING;
   } else {
