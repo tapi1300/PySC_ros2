@@ -23,6 +23,9 @@
 #include <sensor_msgs/image_encodings.hpp>
 #include "cognitive_arch/behavior_tree_nodes/Search.hpp"
 #include "geometry_msgs/msg/twist.hpp"
+#include "geometry_msgs/msg/point.hpp"
+#include "geometry_msgs/msg/quaternion.hpp"
+#include "sensor_msgs/msg/point_cloud2.hpp"
 #include "tf2_msgs/msg/tf_message.hpp"
 #include "behaviortree_cpp_v3/behavior_tree.h"
 
@@ -34,65 +37,64 @@ rclcpp::Node::SharedPtr node = nullptr;
 bool not_created;
 rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_depth;
 cv::Point centroid;
+geometry_msgs::msg::Point point;
+float cx, cy, cz;
+double x3,y3,z3;
+rclcpp::Publisher<tf2_msgs::msg::TFMessage>::SharedPtr tf_pub;
+bool notCreated=true;
+
 
 namespace plansys2_search
 {
 
 
-
-
-void publicar_tf(const sensor_msgs::msg::Image::SharedPtr msg)
+void f2dto3d(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc, const int x, const int y)
 {
-  std::cout << "BBBBBBBBBBBBBBBBBBBBBBBBB\n\n\n\n\n\n" << std::endl;
-  std::cout << sizeof(msg->data)/sizeof(msg->data[0])<< " sizeof" << std::endl;
-  std::cout << msg->height << " height" << std::endl;
-  std::cout << msg->width << " width" << std::endl;
+  int postdata =  x * msg_pc->point_step + y * msg_pc->row_step;
 
-  cv::waitKey();
-  // f2dto3d(msg, center_x, center_y);
+  memcpy(&cx, &msg_pc->data[postdata + msg_pc->fields[0].offset], sizeof(float));
+  memcpy(&cy, &msg_pc->data[postdata + msg_pc->fields[1].offset], sizeof(float));
+  memcpy(&cz, &msg_pc->data[postdata + msg_pc->fields[2].offset], sizeof(float));
 
-  // x3 = point.z;
-  // y3 = -point.x;
-  // z3 = -point.y;
-  
-  // tf2::Stamped<tf2::Transform> persona;
-  // persona.frame_id_ = "base_footprint";
-  // persona.stamp_ = ros::Time::now();
 
-  // persona.setOrigin(tf2::Vector3(x3, y3, z3));
-
-  // tf2::Quaternion q;
-  // q.setRPY(0, 0, 0);
-  // persona.setRotation(q);
-
-  // geometry_msgs::TransformStamped persona_msg = tf2::toMsg(persona);
-  // persona_msg.child_frame_id = "object";
-  // tfBroadcaster_.sendTransform(persona_msg);
-
-  // ROS_INFO("(%f, %f, %f)", x3, y3, z3);
-
-  // sub_tf.shutdown();
-
+  point.x = cx;
+  point.y = cy;
+  point.z = cz;
 }
 
-// void f2dto3d(const sensor_msgs::PointCloud2 msg_pc, const int x, const int y)
-// {
-//   int postdata =  x * step.point_step + y * step.row_step;
+void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
+{
+  std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\n"<< std::endl;
 
-//   memcpy(&cx, &msg_pc.data[postdata + msg_pc.fields[0].offset], sizeof(float));
-//   memcpy(&cy, &msg_pc.data[postdata + msg_pc.fields[1].offset], sizeof(float));
-//   memcpy(&cz, &msg_pc.data[postdata + msg_pc.fields[2].offset], sizeof(float));
+  int center_x = centroid.x;
+  int center_y = centroid.y;
+  f2dto3d(msg_pc, center_x, center_y);
 
+  x3 = point.z;
+  y3 = -point.x;
+  z3 = -point.y;
 
-//   point.x = cx;
-//   point.y = cy;
-//   point.z = 0;
-// }
+  tf2_msgs::msg::TFMessage persona;
+  
+  // persona.transforms.frame_id = "base_footprint";
+  
+  geometry_msgs::msg::Quaternion q;
+  
+  q.x=0;
+  q.y=0;
+  q.z=0;
+  q.w=1;
+  
+  geometry_msgs::msg::Vector3 translation;
+  translation.x=x3;
+  translation.y=y3;
+  translation.z=z3;
+  persona.transforms[0].transform.translation=translation;
+  persona.transforms[0].transform.rotation=q;
+  // persona.transforms.child_frame_id = "object";
+  tf_pub->publish(persona);
 
-
-
-
-
+}
 
 void callback(const sensor_msgs::msg::Image::SharedPtr msg)
 {
@@ -126,20 +128,19 @@ void callback(const sensor_msgs::msg::Image::SharedPtr msg)
 
     if(mu.m00 > 0)
     {
-      std::cout << " hgafuyehbauigojnhjagidbeahgbjznha uaf jabhjf BSFUAJF BAUHFK BASHFJB" << std::endl;
-
       centroid.x = mu.m10/mu.m00;
       centroid.y = mu.m01/mu.m00;
 
       circle(mask, centroid, 4, cv::Scalar(0,255,0), 3, cv::LINE_AA);
-      if(not_created)
-      {
-        sub_depth = node->create_subscription<sensor_msgs::msg::Image>(
-          "/kinect_range/image_depth", rclcpp::SensorDataQoS(), publicar_tf);
-        not_created = false;
-      }
-      std::cout << " 2222222 uaf jabhjf BSFUAJF BAUHFK BASHFJB" << std::endl;
 
+      if (notCreated) {
+        rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub_depth;
+        tf_pub = node->create_publisher<tf2_msgs::msg::TFMessage>(
+          "/tf", 100);
+        sub_depth = node->create_subscription<sensor_msgs::msg::PointCloud2>(
+          "/depth_registered/points", rclcpp::SensorDataQoS(), publicar_tf);
+        notCreated=false;
+      }
 
     }
 
@@ -164,7 +165,7 @@ Search::Search(
     num_pub = node->create_publisher<geometry_msgs::msg::Twist>(
     "/cmd_vel", 100);
     sub_kinect = node->create_subscription<sensor_msgs::msg::Image>(
-      "/kinect_color/image_raw", rclcpp::SensorDataQoS(), callback);    
+      "/kinect_color/image_raw", rclcpp::SensorDataQoS(), callback);
 }
 
 void
