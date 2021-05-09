@@ -34,13 +34,12 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 
 rclcpp::Node::SharedPtr node = nullptr;
-bool not_created;
-rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_depth;
 cv::Point centroid;
 geometry_msgs::msg::Point point;
 float cx, cy, cz;
 double x3,y3,z3;
 rclcpp::Publisher<tf2_msgs::msg::TFMessage>::SharedPtr tf_pub;
+rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub_depth;
 bool notCreated=true;
 
 
@@ -64,37 +63,44 @@ void f2dto3d(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc, const int x,
 
 void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
 {
+
   std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\n"<< std::endl;
 
   int center_x = centroid.x;
   int center_y = centroid.y;
   f2dto3d(msg_pc, center_x, center_y);
+  std::cout << "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG\n\n\n"<< std::endl;
 
   x3 = point.z;
   y3 = -point.x;
   z3 = -point.y;
 
   tf2_msgs::msg::TFMessage persona;
-  
-  // persona.transforms.frame_id = "base_footprint";
+  std::cout << "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC \n\n\n"<< std::endl;
+
+  // persona.transforms[0].header = "map";
   
   geometry_msgs::msg::Quaternion q;
+  std::cout << "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM \n\n\n"<< std::endl;
   
   q.x=0;
   q.y=0;
   q.z=0;
   q.w=1;
   
-  geometry_msgs::msg::Vector3 translation;
-  translation.x=x3;
-  translation.y=y3;
-  translation.z=z3;
-  persona.transforms[0].transform.translation=translation;
+  geometry_msgs::msg::Vector3 t;
+
+  std::cout << "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT \n\n\n"<< std::endl;
+  t.x=x3;
+  t.y=y3;
+  t.z=z3;
+  persona.transforms[0].transform.translation=t;
   persona.transforms[0].transform.rotation=q;
-  // persona.transforms.child_frame_id = "object";
+  std::cout << "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS \n\n\n"<< std::endl;
   tf_pub->publish(persona);
 
 }
+
 
 void callback(const sensor_msgs::msg::Image::SharedPtr msg)
 {
@@ -134,19 +140,15 @@ void callback(const sensor_msgs::msg::Image::SharedPtr msg)
       circle(mask, centroid, 4, cv::Scalar(0,255,0), 3, cv::LINE_AA);
 
       if (notCreated) {
-        rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub_depth;
+        std::cout << "RRRRRRRRRRRRRRRRRRRRRRRRRRRR\n\n" << std::endl;
+        
         tf_pub = node->create_publisher<tf2_msgs::msg::TFMessage>(
           "/tf", 100);
         sub_depth = node->create_subscription<sensor_msgs::msg::PointCloud2>(
           "/depth_registered/points", rclcpp::SensorDataQoS(), publicar_tf);
         notCreated=false;
       }
-
     }
-
-
-
-
   }
 
   cv::imshow("Mask", mask);
@@ -160,12 +162,13 @@ Search::Search(
   const BT::NodeConfiguration & conf)
 : BT::ActionNodeBase(xml_tag_name, conf), counter_(0)
 {
-    not_created = true;
-    node = rclcpp::Node::make_shared("search_aux");
+    node = rclcpp::Node::make_shared("simple_node_pub");
     num_pub = node->create_publisher<geometry_msgs::msg::Twist>(
     "/cmd_vel", 100);
     sub_kinect = node->create_subscription<sensor_msgs::msg::Image>(
       "/kinect_color/image_raw", rclcpp::SensorDataQoS(), callback);
+    
+    
 }
 
 void
@@ -183,7 +186,9 @@ Search::tick()
   giro.angular.z = -0.30;
   rclcpp::spin_some(node);
   num_pub->publish(giro);
-  
+//   if (objecto_encontrado) {
+//       palablackboard;
+//   }
   if (counter_++ < 20) {
     return BT::NodeStatus::RUNNING;
   } else {
@@ -194,6 +199,7 @@ Search::tick()
 
 }  // namespace plansys2_search
 
+#include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)
 {
   factory.registerNodeType<plansys2_search::Search>("Search");
