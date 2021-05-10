@@ -22,6 +22,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(blackboard_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
+find_package(tf2_ros REQUIRED)
 # find_package(OpenCV 2 REQUIRED)
 
 
@@ -42,6 +43,7 @@ set(dependencies
     blackboard_msgs
     cv_bridge
     image_transport
+    tf2_ros
 )
 
 include_directories(include)
