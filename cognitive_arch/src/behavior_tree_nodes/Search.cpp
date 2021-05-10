@@ -25,9 +25,14 @@
 #include "geometry_msgs/msg/twist.hpp"
 #include "geometry_msgs/msg/point.hpp"
 #include "geometry_msgs/msg/quaternion.hpp"
+#include "geometry_msgs/msg/transform.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
 #include "tf2_msgs/msg/tf_message.hpp"
 #include "behaviortree_cpp_v3/behavior_tree.h"
+
+
+#include "tf2_ros/static_transform_broadcaster.h"
+#include "tf2_ros/transform_broadcaster.h"
 
 
 using std::placeholders::_1;
@@ -38,7 +43,7 @@ cv::Point centroid;
 geometry_msgs::msg::Point point;
 float cx, cy, cz;
 double x3,y3,z3;
-rclcpp::Publisher<tf2_msgs::msg::TFMessage>::SharedPtr tf_pub;
+rclcpp::Publisher<geometry_msgs::msg::Transform>::SharedPtr tf_pub;
 rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub_depth;
 bool notCreated=true;
 
@@ -64,41 +69,36 @@ void f2dto3d(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc, const int x,
 void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
 {
 
-  std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\n"<< std::endl;
+  std::cout << "intentamos publicar la TF\n\n\n"<< std::endl;
 
   int center_x = centroid.x;
   int center_y = centroid.y;
   f2dto3d(msg_pc, center_x, center_y);
-  std::cout << "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG\n\n\n"<< std::endl;
 
   x3 = point.z;
   y3 = -point.x;
   z3 = -point.y;
 
-  tf2_msgs::msg::TFMessage persona;
-  std::cout << "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC \n\n\n"<< std::endl;
-
-  // persona.transforms[0].header = "map";
-  
+  geometry_msgs::msg::Vector3 t;  
   geometry_msgs::msg::Quaternion q;
-  std::cout << "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM \n\n\n"<< std::endl;
-  
+  t.x=x3;
+  t.y=y3;
+  t.z=z3;
   q.x=0;
   q.y=0;
   q.z=0;
   q.w=1;
-  
-  geometry_msgs::msg::Vector3 t;
 
-  std::cout << "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT \n\n\n"<< std::endl;
-  t.x=x3;
-  t.y=y3;
-  t.z=z3;
-  persona.transforms[0].transform.translation=t;
-  persona.transforms[0].transform.rotation=q;
-  std::cout << "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS \n\n\n"<< std::endl;
-  tf_pub->publish(persona);
+  geometry_msgs::msg::TransformStamped tf;
+  tf.transform.translation = t;
+  tf.transform.rotation = q;
+  tf.header.frame_id = "base_footprint";
+  tf.child_frame_id = "UwU";
 
+  auto TFBroadcaster = std::make_shared<tf2_ros::TransformBroadcaster>(node);
+
+  TFBroadcaster->sendTransform(tf);
+  std::cout << "tf publicada\n\n\n"<< std::endl;
 }
 
 
@@ -141,8 +141,8 @@ void callback(const sensor_msgs::msg::Image::SharedPtr msg)
 
       if (notCreated) {
         std::cout << "RRRRRRRRRRRRRRRRRRRRRRRRRRRR\n\n" << std::endl;
-        
-        tf_pub = node->create_publisher<tf2_msgs::msg::TFMessage>(
+
+        tf_pub = node->create_publisher<geometry_msgs::msg::Transform>(
           "/tf", 100);
         sub_depth = node->create_subscription<sensor_msgs::msg::PointCloud2>(
           "/depth_registered/points", rclcpp::SensorDataQoS(), publicar_tf);
