@@ -70,6 +70,12 @@ BlackBoardNode::add_entry_service_callback(
         blackboard_.add_entry(request->entry.key, entry->to_base());
       }
       break;
+    case blackboard_msgs::msg::Entry::TF_TYPE:
+      {
+        auto entry = blackboard::Entry<geometry_msgs::msg::Transform>::make_shared(request->entry.tf_entry);
+        blackboard_.add_entry(request->entry.key, entry->to_base());
+      }
+      break;
     default:
       break;
   }
@@ -102,6 +108,12 @@ BlackBoardNode::get_entry_service_callback(
     response->entry.type = blackboard_msgs::msg::Entry::FLOAT_TYPE;
     response->entry.key = request->key;
     response->entry.float_entry = blackboard::as<float>(entry)->data_;
+  }
+
+  if (entry->get_type() == EntryBase::TF) {
+    response->entry.type = blackboard_msgs::msg::Entry::TF_TYPE;
+    response->entry.key = request->key;
+    response->entry.tf_entry = blackboard::as<geometry_msgs::msg::Transform>(entry)->data_;
   }
 
   response->success = true;

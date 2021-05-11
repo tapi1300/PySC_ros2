@@ -66,6 +66,11 @@ BlackBoardClient::add_entry(const std::string & key, EntryBase::Ptr entry)
     request->entry.key = key;
     request->entry.float_entry = blackboard::as<float>(entry)->data_;
   }
+  if (entry->get_type() == EntryBase::TF) {
+    request->entry.type = blackboard_msgs::msg::Entry::TF_TYPE;
+    request->entry.key = key;
+    request->entry.tf_entry = blackboard::as<geometry_msgs::msg::Transform>(entry)->data_;
+  }
 
   auto future_result = add_entry_client_->async_send_request(request);
 
@@ -123,6 +128,13 @@ BlackBoardClient::get_entry(const std::string & key)
         {
           ret = blackboard::Entry<float>::make_shared(
             future_result.get()->entry.float_entry);
+          return ret;
+        }
+        break;
+      case blackboard_msgs::msg::Entry::TF_TYPE:
+        {
+          ret = blackboard::Entry<geometry_msgs::msg::Transform>::make_shared(
+            future_result.get()->entry.tf_entry);
           return ret;
         }
         break;

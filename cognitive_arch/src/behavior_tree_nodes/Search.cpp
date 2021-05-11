@@ -99,6 +99,10 @@ void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
 
   TFBroadcaster->sendTransform(tf);
   std::cout << "tf publicada\n\n\n"<< std::endl;
+
+  sub_depth.reset();
+
+
 }
 
 
