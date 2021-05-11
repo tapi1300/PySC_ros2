@@ -150,7 +150,7 @@ void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
 
   tf_pub->publish(tf);
 
-  std::cout << "tf publicada\n\n\n"<< std::endl;
+  std::cout << "tf publicada -> " << tf.child_frame_id << " [" << tf.transform.translation.x << "," << tf.transform.translation.y << "]\n\n\n" << std::endl;
 
   num_tfs++;
 

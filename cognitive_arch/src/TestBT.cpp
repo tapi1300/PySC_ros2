@@ -53,7 +53,9 @@ class BB : public rclcpp::Node
             auto entry = blackboard::Entry<geometry_msgs::msg::TransformStamped>::make_shared(tf_aux);
             bb->add_entry(object_name, entry->to_base());
             TFs_adddeds++;
-            std::cout << "Objeto añadido a la blackboard" << std::endl; 
+  			auto test_entry_got = blackboard::as<geometry_msgs::msg::TransformStamped>(bb->get_entry(object_name));
+            std::cout << "Objeto añadido a la blackboard -> " << test_entry_got->data_.child_frame_id << " ["
+				<< test_entry_got->data_.transform.translation.x << "," << test_entry_got->data_.transform.translation.x << "]\n\n\n"  << std::endl; 
         }
 
         void step()
