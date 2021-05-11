@@ -43,7 +43,7 @@ cv::Point centroid;
 geometry_msgs::msg::Point point;
 float cx, cy, cz;
 double x3,y3,z3;
-rclcpp::Publisher<geometry_msgs::msg::Transform>::SharedPtr tf_pub;
+rclcpp::Publisher<geometry_msgs::msg::TransformStamped>::SharedPtr tf_pub;
 rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub_depth;
 bool notCreated=true;
 
@@ -95,9 +95,12 @@ void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
   tf.header.frame_id = "base_footprint";
   tf.child_frame_id = "UwU";
 
-  auto TFBroadcaster = std::make_shared<tf2_ros::TransformBroadcaster>(node);
+  auto TFBroadcaster = std::make_shared<tf2_ros::StaticTransformBroadcaster>(node);
 
   TFBroadcaster->sendTransform(tf);
+
+  tf_pub->publish(tf);
+
   std::cout << "tf publicada\n\n\n"<< std::endl;
 
   sub_depth.reset();
@@ -146,8 +149,8 @@ void callback(const sensor_msgs::msg::Image::SharedPtr msg)
       if (notCreated) {
         std::cout << "RRRRRRRRRRRRRRRRRRRRRRRRRRRR\n\n" << std::endl;
 
-        tf_pub = node->create_publisher<geometry_msgs::msg::Transform>(
-          "/tf", 100);
+        tf_pub = node->create_publisher<geometry_msgs::msg::TransformStamped>(
+          "/add_tf_bb", 100);
         sub_depth = node->create_subscription<sensor_msgs::msg::PointCloud2>(
           "/depth_registered/points", rclcpp::SensorDataQoS(), publicar_tf);
         notCreated=false;
