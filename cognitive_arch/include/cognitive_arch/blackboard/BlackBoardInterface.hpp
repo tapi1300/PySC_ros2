@@ -18,6 +18,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include "geometry_msgs/msg/transform_stamped.hpp"
 
 namespace blackboard
 {
@@ -32,6 +33,7 @@ public:
   static const int BOOL = 0;
   static const int STRING = 1;
   static const int FLOAT = 2;
+  static const int TF = 3;
 
   virtual int get_type() {return type_;}
 
@@ -60,6 +62,8 @@ public:
       type_ = EntryBase::STRING;
     } else if (std::is_same<float, T>::value) {
       type_ = EntryBase::FLOAT;
+    } else if (std::is_same<geometry_msgs::msg::Transform, T>::value) {
+      type_ = EntryBase::TF;
     }
   }
 
