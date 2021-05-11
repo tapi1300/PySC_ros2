@@ -26,6 +26,7 @@
 #include "geometry_msgs/msg/point.hpp"
 #include "geometry_msgs/msg/quaternion.hpp"
 #include "geometry_msgs/msg/transform.hpp"
+#include "geometry_msgs/msg/pose_with_covariance_stamped.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
 #include "tf2_msgs/msg/tf_message.hpp"
 #include "behaviortree_cpp_v3/behavior_tree.h"
@@ -39,13 +40,16 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 
 rclcpp::Node::SharedPtr node = nullptr;
+rclcpp::Node::SharedPtr node2 = nullptr;
 cv::Point centroid;
 geometry_msgs::msg::Point point;
 float cx, cy, cz;
 double x3,y3,z3;
 rclcpp::Publisher<geometry_msgs::msg::TransformStamped>::SharedPtr tf_pub;
 rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub_depth;
-bool notCreated=true;
+rclcpp::Subscription<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr sub_rob_pose;
+bool notCreated=true, tf_robot=false;
+int num_tfs = 0;
 
 
 namespace plansys2_search
@@ -66,6 +70,39 @@ void f2dto3d(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc, const int x,
   point.z = cz;
 }
 
+void publicar_tf_robot(const geometry_msgs::msg::PoseWithCovarianceStamped::SharedPtr msg)
+{
+  std::cout << "TF ROBOT HOLA WATAFAQQQQQ\n\n\n\n\n" << std::endl;
+  geometry_msgs::msg::Vector3 t;  
+  geometry_msgs::msg::Quaternion q;
+  t.x=msg->pose.pose.position.x;
+  t.y=msg->pose.pose.position.y;
+  t.z=msg->pose.pose.position.z;
+  q.x=msg->pose.pose.orientation.x;
+  q.y=msg->pose.pose.orientation.y;
+  q.z=msg->pose.pose.orientation.z;
+  q.w=msg->pose.pose.orientation.w;
+
+  geometry_msgs::msg::TransformStamped tf;
+  tf.transform.translation = t;
+  tf.transform.rotation = q;
+  tf.header.frame_id = "map";
+  tf.child_frame_id = "pose_robot" + std::to_string(num_tfs);
+
+  auto TFBroadcaster = std::make_shared<tf2_ros::StaticTransformBroadcaster>(node2);
+
+  TFBroadcaster->sendTransform(tf);
+
+  tf_pub->publish(tf);
+
+  std::cout << "tf robot publicada\n\n\n"<< std::endl;
+  
+  tf_robot = true;
+
+  sub_rob_pose.reset();
+}
+
+
 void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
 {
 
@@ -79,6 +116,7 @@ void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
   y3 = -point.x;
   z3 = -point.y;
 
+
   geometry_msgs::msg::Vector3 t;  
   geometry_msgs::msg::Quaternion q;
   t.x=x3;
@@ -88,12 +126,23 @@ void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
   q.y=0;
   q.z=0;
   q.w=1;
+  
+  sub_rob_pose = node2->create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
+    "/amcl_pose", rclcpp::SensorDataQoS(), publicar_tf_robot);
+  tf_robot = false;
+  
+  while(!tf_robot)
+  {  
+    rclcpp::spin_some(node2);
+    // Wait until tf_robot is published
+  }
+  rclcpp::spin_some(node2);
 
   geometry_msgs::msg::TransformStamped tf;
   tf.transform.translation = t;
   tf.transform.rotation = q;
-  tf.header.frame_id = "base_footprint";
-  tf.child_frame_id = "UwU";
+  tf.header.frame_id = "pose_robot" + std::to_string(num_tfs);
+  tf.child_frame_id = "object" + std::to_string(num_tfs);
 
   auto TFBroadcaster = std::make_shared<tf2_ros::StaticTransformBroadcaster>(node);
 
@@ -103,9 +152,9 @@ void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
 
   std::cout << "tf publicada\n\n\n"<< std::endl;
 
+  num_tfs++;
+
   sub_depth.reset();
-
-
 }
 
 
@@ -170,6 +219,7 @@ Search::Search(
 : BT::ActionNodeBase(xml_tag_name, conf), counter_(0)
 {
     node = rclcpp::Node::make_shared("simple_node_pub");
+    node2= rclcpp::Node::make_shared("simple_node2");
     num_pub = node->create_publisher<geometry_msgs::msg::Twist>(
     "/cmd_vel", 100);
     sub_kinect = node->create_subscription<sensor_msgs::msg::Image>(
