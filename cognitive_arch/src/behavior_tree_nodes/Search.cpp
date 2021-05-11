@@ -72,7 +72,6 @@ void f2dto3d(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc, const int x,
 
 void publicar_tf_robot(const geometry_msgs::msg::PoseWithCovarianceStamped::SharedPtr msg)
 {
-  std::cout << "TF ROBOT HOLA WATAFAQQQQQ\n\n\n\n\n" << std::endl;
   geometry_msgs::msg::Vector3 t;  
   geometry_msgs::msg::Quaternion q;
   t.x=msg->pose.pose.position.x;
@@ -105,9 +104,6 @@ void publicar_tf_robot(const geometry_msgs::msg::PoseWithCovarianceStamped::Shar
 
 void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
 {
-
-  std::cout << "intentamos publicar la TF\n\n\n"<< std::endl;
-
   int center_x = centroid.x;
   int center_y = centroid.y;
   f2dto3d(msg_pc, center_x, center_y);
@@ -196,8 +192,6 @@ void callback(const sensor_msgs::msg::Image::SharedPtr msg)
       circle(mask, centroid, 4, cv::Scalar(0,255,0), 3, cv::LINE_AA);
 
       if (notCreated) {
-        std::cout << "RRRRRRRRRRRRRRRRRRRRRRRRRRRR\n\n" << std::endl;
-
         tf_pub = node->create_publisher<geometry_msgs::msg::TransformStamped>(
           "/add_tf_bb", 100);
         sub_depth = node->create_subscription<sensor_msgs::msg::PointCloud2>(
@@ -243,9 +237,6 @@ Search::tick()
   giro.angular.z = -0.30;
   rclcpp::spin_some(node);
   num_pub->publish(giro);
-//   if (objecto_encontrado) {
-//       palablackboard;
-//   }
   if (counter_++ < 20) {
     return BT::NodeStatus::RUNNING;
   } else {

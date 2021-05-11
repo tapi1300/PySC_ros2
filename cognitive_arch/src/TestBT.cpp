@@ -200,9 +200,6 @@ public:
 	/***B1***/
 	virtual void B1_code_once()
 	{
-		auto entry_2_got = blackboard::as<float>(blackboard->get_entry("lugar_1"));
-		std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
-		std::cout << entry_2_got->data_ << std::endl;
 		// Set the goal for next state, and execute plan
 		problem_expert_->setGoal(
 			plansys2::Goal(
