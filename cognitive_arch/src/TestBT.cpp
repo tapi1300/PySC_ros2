@@ -31,8 +31,12 @@
 class BB : public rclcpp::Node
 {
     public:
-        BB() : rclcpp::Node("BlackBoardNode")
+        BB() : rclcpp::Node("BBNode")
         {
+            sub_tf_bb = this->create_subscription<geometry_msgs::msg::TransformStamped>(
+                "/add_tf_bb", rclcpp::SensorDataQoS(), std::bind(&BB::add_tf_bb, this, std::placeholders::_1));
+
+            bb = blackboard::BlackBoard::make_shared();
         }
 
         void add_tf_bb(geometry_msgs::msg::TransformStamped::SharedPtr msg)
@@ -50,14 +54,6 @@ class BB : public rclcpp::Node
             bb->add_entry(object_name, entry->to_base());
             TFs_adddeds++;
             std::cout << "Objeto añadido a la blackboard" << std::endl; 
-        }
-
-        void init()
-        {
-            sub_tf_bb = this->create_subscription<geometry_msgs::msg::TransformStamped>(
-                "/add_tf_bb", rclcpp::SensorDataQoS(), std::bind(&BB::add_tf_bb, this, std::placeholders::_1));
-
-            bb = blackboard::BlackBoard::make_shared();
         }
 
         void step()
@@ -419,10 +415,12 @@ int main(int argc, char ** argv)
 	rclcpp::init(argc, argv);
 
 	auto node = std::make_shared<Test>();
+	auto node_bb = std::make_shared<BB>();
 	
 	rclcpp::executors::SingleThreadedExecutor executor;
 
 	executor.add_node(node->get_node_base_interface());
+	executor.add_node(node_bb);
 	node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
 	executor.spin_some();
 	node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
