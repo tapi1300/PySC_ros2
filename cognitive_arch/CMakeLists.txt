@@ -23,6 +23,10 @@ find_package(blackboard_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(tf2_ros REQUIRED)
+#****#
+find_package(gb_attention REQUIRED)
+find_package(gb_attention_msgs REQUIRED)
+#****#
 # find_package(OpenCV 2 REQUIRED)
 
 
@@ -44,6 +48,10 @@ set(dependencies
     cv_bridge
     image_transport
     tf2_ros
+    #****#
+    gb_attention
+    gb_attention_msgs
+    #****#
 )
 
 include_directories(include)
@@ -85,6 +93,12 @@ add_executable(hfsm_main
   fsm/MyBT.cpp
 )
 ament_target_dependencies(hfsm_main ${dependencies})
+
+#****#
+add_executable(attention_manager src/attention_manager.cpp
+)
+ament_target_dependencies(attention_manager ${dependencies})
+#****#
 
 target_link_libraries(hfsm_main blackboard)
 
