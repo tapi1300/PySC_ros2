@@ -21,6 +21,7 @@ from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetE
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+import gb_attention
 
 
 def generate_launch_description():
@@ -143,6 +144,21 @@ def generate_launch_description():
         }
       ])
 
+    #****#
+    bringup_dir = get_package_share_directory('gb_attention')
+    config_dir = os.path.join(bringup_dir, 'params')
+    config_file = os.path.join(config_dir, 'attention_config.yaml')
+
+    attention_manager_cmd = Node(
+        package='gb_attention',
+        executable='attention_manager',
+        output='screen',
+        namespace=namespace,
+        parameters=[
+          config_file
+        ])
+      #****#
+
 
       
 
@@ -161,5 +177,9 @@ def generate_launch_description():
     ld.add_action(pick_cmd)
     ld.add_action(drop_cmd)
     ld.add_action(search_cmd)
+
+    #****#
+    ld.add_action(attention_manager_cmd)
+    #****#
 
     return ld

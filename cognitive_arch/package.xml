@@ -26,6 +26,10 @@
   <depend>ament_index_cpp</depend>
   <depend>plansys2_bt_actions</depend>
   <depend>tf2_ros</depend>
+  <!-- #****# -->
+  <depend>gb_attention</depend>
+  <depend>gb_attention_msgs</depend>
+  <!-- #****# -->
   
 
 

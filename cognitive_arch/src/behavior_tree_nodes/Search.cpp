@@ -31,9 +31,11 @@
 #include "tf2_msgs/msg/tf_message.hpp"
 #include "behaviortree_cpp_v3/behavior_tree.h"
 
-
 #include "tf2_ros/static_transform_broadcaster.h"
 #include "tf2_ros/transform_broadcaster.h"
+
+#include "gb_attention/AttentionClientNode.hpp"
+
 
 
 using std::placeholders::_1;
@@ -52,9 +54,21 @@ bool notCreated=true, tf_robot=false;
 int num_tfs = 0;
 
 
+
 namespace plansys2_search
 {
 
+/*****/
+class AttentionClient_Search : public gb_attention::AttentionClientNode
+{
+public:
+  AttentionClient_Search(const std::string & name) : AttentionClientNode(name) {}
+  const std::map<std::string, std::list<geometry_msgs::msg::PointStamped>> & get_attention_points()
+  {
+    return attention_points_;
+  }
+};
+/*****/
 
 void f2dto3d(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc, const int x, const int y)
 {
@@ -72,7 +86,6 @@ void f2dto3d(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc, const int x,
 
 void publicar_tf_robot(const geometry_msgs::msg::PoseWithCovarianceStamped::SharedPtr msg)
 {
-  std::cout << "TF ROBOT HOLA WATAFAQQQQQ\n\n\n\n\n" << std::endl;
   geometry_msgs::msg::Vector3 t;  
   geometry_msgs::msg::Quaternion q;
   t.x=msg->pose.pose.position.x;
@@ -105,9 +118,6 @@ void publicar_tf_robot(const geometry_msgs::msg::PoseWithCovarianceStamped::Shar
 
 void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
 {
-
-  std::cout << "intentamos publicar la TF\n\n\n"<< std::endl;
-
   int center_x = centroid.x;
   int center_y = centroid.y;
   f2dto3d(msg_pc, center_x, center_y);
@@ -150,7 +160,7 @@ void publicar_tf(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc)
 
   tf_pub->publish(tf);
 
-  std::cout << "tf publicada\n\n\n"<< std::endl;
+  std::cout << "tf publicada -> " << tf.child_frame_id << " [" << tf.transform.translation.x << "," << tf.transform.translation.y << "]\n\n\n" << std::endl;
 
   num_tfs++;
 
@@ -196,8 +206,6 @@ void callback(const sensor_msgs::msg::Image::SharedPtr msg)
       circle(mask, centroid, 4, cv::Scalar(0,255,0), 3, cv::LINE_AA);
 
       if (notCreated) {
-        std::cout << "RRRRRRRRRRRRRRRRRRRRRRRRRRRR\n\n" << std::endl;
-
         tf_pub = node->create_publisher<geometry_msgs::msg::TransformStamped>(
           "/add_tf_bb", 100);
         sub_depth = node->create_subscription<sensor_msgs::msg::PointCloud2>(
@@ -213,6 +221,11 @@ void callback(const sensor_msgs::msg::Image::SharedPtr msg)
   
   }
 
+/*****/
+std::vector<std::string> get_sala() { return std::vector<std::string>{};}
+// Devuelve el nombre de la sala en la que está el robot
+/*****/
+
 Search::Search(
   const std::string & xml_tag_name,
   const BT::NodeConfiguration & conf)
@@ -224,8 +237,47 @@ Search::Search(
     "/cmd_vel", 100);
     sub_kinect = node->create_subscription<sensor_msgs::msg::Image>(
       "/kinect_color/image_raw", rclcpp::SensorDataQoS(), callback);
+
+
+    /*****/
+    gb_attention::AttentionClientNodeTest::SharedPtr attention_client_node = std::make_shared<AttentionClientNodeTest>(
+      "zone_attention_client");
+    attention_client->set_parameter({"class_id", "zone"});
     
+    std::vector<std::string> sala = get_sala();
+    attention_client->set_parameter({"instances", std::vector<std::string>{sala}});
+    switch (sala[0])
+    {
+    case "Cocina":
+      attention_client->set_parameter({"default", std::vector<std::string>{
+        // Cambiando por puntos válidos de la cocina
+          "0.5, 0.15, 0.75",
+          "-0.4, -0.6, 1.00"
+        }});
+      break;
     
+    case "B1":
+      attention_client->set_parameter({"default", std::vector<std::string>{
+        // Cambiando por puntos válidos de B1
+          "0.5, 0.15, 0.75",
+          "-0.4, -0.6, 1.00"
+        }});
+      break;
+    //Faltarían por añadir habitaciones (salon, B2, H1, H2) omitidas para hacer el pseudo-codigo más simple
+    default:
+      attention_client->set_parameter({"default", std::vector<std::string>{
+          "1, 1, 1"
+        }});
+      break;
+    }
+
+
+
+
+
+
+    /*****/
+
 }
 
 void
@@ -243,9 +295,6 @@ Search::tick()
   giro.angular.z = -0.30;
   rclcpp::spin_some(node);
   num_pub->publish(giro);
-//   if (objecto_encontrado) {
-//       palablackboard;
-//   }
   if (counter_++ < 20) {
     return BT::NodeStatus::RUNNING;
   } else {
