@@ -94,12 +94,6 @@ add_executable(hfsm_main
 )
 ament_target_dependencies(hfsm_main ${dependencies})
 
-#****#
-add_executable(attention_manager src/attention_manager.cpp
-)
-ament_target_dependencies(attention_manager ${dependencies})
-#****#
-
 target_link_libraries(hfsm_main blackboard)
 
 install(DIRECTORY fsm launch pddl behavior_trees_xml config DESTINATION share/${PROJECT_NAME})
