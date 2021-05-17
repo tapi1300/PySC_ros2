@@ -68,6 +68,21 @@ public:
     return attention_points_;
   }
 };
+
+
+class AttentionServer_Search : public gb_attention::AttentionServerNode
+{
+public:
+  const std::list<gb_attention::AttentionPoint> & get_attention_points()
+  {
+    return attention_points_;
+  }
+};
+
+
+
+
+
 /*****/
 
 void f2dto3d(const sensor_msgs::msg::PointCloud2::SharedPtr msg_pc, const int x, const int y)
@@ -242,6 +257,22 @@ Search::Search(
     /*****/
     plansys2_search::AttentionClient_Search::SharedPtr attention_client_node = std::make_shared<AttentionClient_Search>(
       "zone_attention_client");
+    plansys2_search::AttentionServer_Search::SharedPtr attention_server_node = std::make_shared<AttentionServer_Search>(
+      "attention_server");
+
+
+    attention_client_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
+    attention_server_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
+    executor_attention.spin_some();
+    attention_client_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
+    attention_server_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_ACTIVATE);
+    executor_attention.spin_some();
+
+
+
+
+
+
     attention_client_node->set_parameter({"class_id", "zone"});
     
     std::vector<std::string> sala = get_sala();
@@ -292,6 +323,7 @@ Search::tick()
   giro.linear.x = 0.0;
   giro.angular.z = -0.30;
   rclcpp::spin_some(node);
+  executor_attention.spin_some();
   num_pub->publish(giro);
   if (counter_++ < 20) {
     return BT::NodeStatus::RUNNING;
