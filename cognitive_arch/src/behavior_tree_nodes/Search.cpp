@@ -35,6 +35,10 @@
 #include "tf2_ros/transform_broadcaster.h"
 
 #include "gb_attention/AttentionClientNode.hpp"
+#include "gb_attention/AttentionServerNode.hpp"
+#include "gb_attention/OptimizedAttentionServerNode.hpp"
+
+
 
 
 
@@ -70,7 +74,7 @@ public:
 };
 
 
-class AttentionServer_Search : public gb_attention::AttentionServerNode
+class AttentionServer_Search : public gb_attention::OptimizedAttentionServerNode
 {
 public:
   const std::list<gb_attention::AttentionPoint> & get_attention_points()
@@ -237,7 +241,7 @@ void callback(const sensor_msgs::msg::Image::SharedPtr msg)
   }
 
 /*****/
-std::vector<std::string> get_sala() { return std::vector<std::string>{"1","2"};}
+std::vector<std::string> get_sala() { return std::vector<std::string>{"Cocina","2"};}
 // Devuelve el nombre de la sala en la que está el robot
 /*****/
 
@@ -257,8 +261,7 @@ Search::Search(
     /*****/
     plansys2_search::AttentionClient_Search::SharedPtr attention_client_node = std::make_shared<AttentionClient_Search>(
       "zone_attention_client");
-    plansys2_search::AttentionServer_Search::SharedPtr attention_server_node = std::make_shared<AttentionServer_Search>(
-      "attention_server");
+    plansys2_search::AttentionServer_Search::SharedPtr attention_server_node = std::make_shared<AttentionServer_Search>();
 
 
     attention_client_node->trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_CONFIGURE);
@@ -284,6 +287,8 @@ Search::Search(
           "0.5, 0.15, 0.75",
           "-0.4, -0.6, 1.00"
         }});
+
+        std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa\n\n" << std::endl;
     }
     
     else if(sala.at(0) == "B1"){
@@ -298,6 +303,7 @@ Search::Search(
       attention_client_node->set_parameter({"default", std::vector<std::string>{
           "1, 1, 1"
         }});
+        std::cout << "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n\n" << std::endl;
     }
 
 
